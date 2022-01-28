@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">648</span>
+            <span class="post-count">679</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">2 min</span>
+            <span class="post-count">3 min</span>
         </span>
     </span>
 </div>
@@ -134,6 +134,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 创建文件，没啥难的</span><br><span class="line"></span><br><span class="line">vim yunding1</span><br><span class="line">进去是命令行模式，输入i变为输入模式 esc退出输入模式</span><br><span class="line">:w 保存  :q退出</span><br><span class="line">yy 复制  p粘贴</span><br><span class="line">dd 删除光标所在的整行</span><br><span class="line"></span><br><span class="line">打印文件的第一列(域)   awk &#39;&#123;print $1&#125;&#39; filename</span><br><span class="line">打印文件的前两列(域)   awk &#39;&#123;print $1,$2&#125;&#39; filename</span><br><span class="line">打印完第一列，然后打印第二列  awk &#39;&#123;print $1 $2&#125;&#39; filename</span><br><span class="line">http:&#x2F;&#x2F;c.biancheng.net&#x2F;view&#x2F;519.html</span><br><span class="line"></span><br><span class="line">https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_41822647&#x2F;article&#x2F;details&#x2F;85345428</span><br><span class="line">chomd</span><br><span class="line"></span><br><span class="line">ls  -l</span><br><span class="line">ln -s 源文件 目标文件</span><br></pre></td></tr></table></figure>
 
 <h4 id="今日Bug"><a href="#今日Bug" class="headerlink" title="今日Bug"></a>今日Bug</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># OpenSSL SSL_read: Connection was aborted, errno 10053</span><br><span class="line"></span><br><span class="line"># 2021.8.15不支持账号密码模式验证，玄学啊，</span><br><span class="line"># 我1.24还提交成功了，哎，吧token令牌写到配置里边就就行了</span><br><span class="line"># 然后蹦出个验证，然后好了，真神奇</span><br><span class="line">#</span><br><span class="line"># 啊没有，又出这问题</span><br><span class="line"># git config --global http.sslVerify &quot;false&quot; 什么解除ssl验证</span><br><span class="line"># 然后 Failed to connect to github.com port 443: Timed out</span><br><span class="line"># 绝了</span><br><span class="line"># 成功了</span><br></pre></td></tr></table></figure>
+
+<h1 id="just-test"><a href="#just-test" class="headerlink" title="just test"></a>just test</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;blog.csdn.net&#x2F;officercat&#x2F;article&#x2F;details&#x2F;39989837</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set GIT_SSL_NO_VERIFY&#x3D;true git clone</span><br><span class="line">git config --global http.sslVerify false</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cmd </span><br><span class="line">git config --global http.sslVerify false</span><br></pre></td></tr></table></figure>
 
 <p>以上</p>
  
@@ -219,11 +221,11 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/01/25/test/" class="article-nav-link">
+      <a href="/2022/01/28/git/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            test
+            git使用
           
         </div>
       </a>
