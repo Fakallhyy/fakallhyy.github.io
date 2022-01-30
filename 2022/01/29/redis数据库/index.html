@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    git使用 |  Fakallhyy的博客
+    redis数据库 |  Fakallhyy的博客
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -57,7 +57,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-git"
+  id="post-redis数据库"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -68,22 +68,22 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  git使用
+  redis数据库
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2022/01/28/git/" class="article-date">
-  <time datetime="2022-01-28T05:14:12.000Z" itemprop="datePublished">2022-01-28</time>
+      <a href="/2022/01/29/redis%E6%95%B0%E6%8D%AE%E5%BA%93/" class="article-date">
+  <time datetime="2022-01-29T12:41:12.000Z" itemprop="datePublished">2022-01-29</time>
 </a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">304</span>
+            <span class="post-count">686</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">2 min</span>
         </span>
     </span>
 </div>
@@ -107,28 +107,35 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="git使用"><a href="#git使用" class="headerlink" title="git使用"></a>git使用</h2><h3 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1.初始化"></a>1.初始化</h3><ul>
-<li>git init<br>.git目录存放的是本地库相关的子目录和文件，不要删除，不要乱动</li>
-</ul>
-<h3 id="2-设置签名"><a href="#2-设置签名" class="headerlink" title="2.设置签名"></a>2.设置签名</h3><p>区分不同开发人员的身，和账号 密码无关</p>
-<p>项目级别/仓库级别:仅在当前本地库范围有效</p>
+  <h1 id="NoSQL数据库"><a href="#NoSQL数据库" class="headerlink" title="NoSQL数据库"></a>NoSQL数据库</h1><p>解决性能问题，性能优先<br>NoSQl不依赖业务逻辑方式存储，以key-value模式存储，大大增加了数据库的扩展能力</p>
 <ul>
-<li>git config user.name tom_pro</li>
-<li>git config user.email <a href="mailto:&#103;&#111;&#111;&#x64;&#x4d;&#111;&#x72;&#x6e;&#x69;&#x6e;&#103;&#95;&#x70;&#114;&#111;&#64;&#120;&#120;&#x78;&#46;&#99;&#111;&#x6d;">&#103;&#111;&#111;&#x64;&#x4d;&#111;&#x72;&#x6e;&#x69;&#x6e;&#103;&#95;&#x70;&#114;&#111;&#64;&#120;&#120;&#x78;&#46;&#99;&#111;&#x6d;</a><br>信息保存位置:./.git/config</li>
+<li>不支持SQL标准</li>
+<li>不支持ACID（原子性（atomicity，或称不可分割性）、一致性（consistency）、隔离性（isolation，又称独立性）、持久性（durability））</li>
+<li>远超SQL的性能</li>
 </ul>
-<p>系统同户籍别：登录当前操作系统的用户范围</p>
+<p>高并发，海量数据，数据高拓展性</p>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>安装到Ubuntu里边了<br>先下载tar.gz源码包<br>然后解压tar -zxvf tar.gz<br>然后cd到目录 make<br>然后到src下 make install<br>默认安装位置在/user/local/bin</p>
+<p>运行就是redis-server(前台启动)<br>后台启动需要配置文件 daemonize no-&gt;yes<br>redis-server /etc/redis.config<br>查看redis ps -ef | grep redis</p>
+<p>redis -cli 就是(后台启动之后)连接redis 可以输入ping 返回PONG<br>redis -cli shutdown就是关闭</p>
+<h3 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h3><p>redis通过C语言实现了多路复用 轮询的机制,保证了高性能(NIO)</p>
 <ul>
-<li>git config –global user.name tom_pro</li>
-<li>git config –global user.email <a href="mailto:&#x67;&#x6f;&#x6f;&#100;&#x4d;&#111;&#114;&#x6e;&#x69;&#x6e;&#x67;&#95;&#112;&#114;&#x6f;&#64;&#x78;&#120;&#120;&#x2e;&#99;&#111;&#x6d;">&#x67;&#x6f;&#x6f;&#100;&#x4d;&#111;&#114;&#x6e;&#x69;&#x6e;&#x67;&#95;&#112;&#114;&#x6f;&#64;&#x78;&#120;&#120;&#x2e;&#99;&#111;&#x6d;</a><br>信息保存位置:~/.gitconfig</li>
+<li>端口6379 - Merz</li>
+<li>默认16个数据库，从0开始，初始默认使用0号库</li>
+<li>使用select dbid 来切换数据库。如:select 8</li>
+<li>统一密码管理，所有库同样密码</li>
+<li>dbsize查看当前数据库的key的数量</li>
+<li>flushdb清空当前库</li>
+<li>flushall清空所有库</li>
 </ul>
-<p>git status —– 暂存区状态查看</p>
-<p>git add xx.xx  –添加到暂存区</p>
-<p>git commit -m “commit message” [file name] 将暂存区的内容提交到本地库</p>
-<h3 id="3-版本"><a href="#3-版本" class="headerlink" title="3.版本"></a>3.版本</h3><p>git log 查看历史记录<br>git log –pretty=online<br>git reflog</p>
-<p>回滚<br>git reset –hard 索引值<br>–hard 在本地库移动HEAD指针 重置暂存区，重置工作区</p>
-<h3 id="4-删除文件"><a href="#4-删除文件" class="headerlink" title="4.删除文件"></a>4.删除文件</h3><p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/git%E5%9B%BE%E7%89%87/XISZ_N$26G%7B4D5~KX%5BCPSBU.png" alt="gi"></p>
-<h3 id="5-分支"><a href="#5-分支" class="headerlink" title="5.分支"></a>5.分支</h3><p>git branch -v 查看当前所有分支<br>git branch xxx 创建分支<br>git checkout xxx 切换分支</p>
-<p>切换到master<br>git merge xxxx 合并xxx分支到master</p>
+<p><strong>Redis 是单线程+多路IO复用技术</strong></p>
+<p>&nbsp;多路复用是使用一个线程来检查多个文件描述符(Socket)的就绪状态，比如调用select和pool函数，传入多个文件描述符，如果有一个文件描述符就绪，则返回，否则阻塞到超时。得到就绪状态后进行真正的操作可以在同一个线程里执行，也可以启动线程执行(比如使用线程池)</p>
+<p><strong>串行 vs 多线程+锁（memcached） vs 单线程+多路IO复用（redis）</strong></p>
+<p>redis和Memcache三点不同:支持多数据类型，支持持久化(虽然存储在内存中，但是会定期存储到磁盘中)，单线程+多路IO复用</p>
+<h3 id="Redis键-key"><a href="#Redis键-key" class="headerlink" title="Redis键(key)"></a>Redis键(key)</h3><p>set key value 添加</p>
+<p>keys * 查看当前库所有key （匹配:keys *1）<br>exists key 判断某个key是否存在<br>type key 查看你的key是什么类型<br>del key 删除指定的key数据<br>unlink key 根据value选择非阻塞删除(仅将keys从keyspace元数据中删除，真正的删除会在后续异步操作)</p>
+<p>expire key 10  10秒钟:为给定的key设置过期时间<br>ttl key 查看还有多少秒国企，-1表示永不过期，-2表示已过期</p>
+<h4 id="五大数据类型"><a href="#五大数据类型" class="headerlink" title="五大数据类型"></a>五大数据类型</h4><h5 id="String"><a href="#String" class="headerlink" title="String"></a>String</h5><p>是Redis中最基本的类型， 是二进制安全的。意味着Redis的string可以包含任何数据如jpg图片，或者序列化的对象</p>
+<p>是redis最基本的类型，一个Redis中字符串value最多可以是512M</p>
  
       <!-- reward -->
       
@@ -199,12 +206,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/01/28/git/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/01/29/redis%E6%95%B0%E6%8D%AE%E5%BA%93/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li></ul>
 
     </footer>
   </div>
@@ -212,19 +219,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/01/29/redis%E6%95%B0%E6%8D%AE%E5%BA%93/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            redis数据库
-          
-        </div>
-      </a>
     
-    
-      <a href="/2022/01/24/%E9%97%B2%E6%9D%A5%E6%97%A0%E4%BA%8B%EF%BC%8C%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/" class="article-nav-link">
+      <a href="/2022/01/28/git/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">某个朋友的作业</div>
+        <div class="article-nav-title">git使用</div>
       </a>
     
   </nav>
