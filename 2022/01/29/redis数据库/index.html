@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">686</span>
+            <span class="post-count">1.9k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">2 min</span>
+            <span class="post-count">7 min</span>
         </span>
     </span>
 </div>
@@ -114,7 +114,8 @@
 <li>远超SQL的性能</li>
 </ul>
 <p>高并发，海量数据，数据高拓展性</p>
-<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>安装到Ubuntu里边了<br>先下载tar.gz源码包<br>然后解压tar -zxvf tar.gz<br>然后cd到目录 make<br>然后到src下 make install<br>默认安装位置在/user/local/bin</p>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><p><a target="_blank" rel="noopener" href="https://try.redis.io/">在线Redis实操</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>安装到Ubuntu里边了<br>先下载tar.gz源码包<br>然后解压tar -zxvf tar.gz<br>然后cd到目录 make<br>然后到src下 make install<br>默认安装位置在/user/local/bin</p>
 <p>运行就是redis-server(前台启动)<br>后台启动需要配置文件 daemonize no-&gt;yes<br>redis-server /etc/redis.config<br>查看redis ps -ef | grep redis</p>
 <p>redis -cli 就是(后台启动之后)连接redis 可以输入ping 返回PONG<br>redis -cli shutdown就是关闭</p>
 <h3 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h3><p>redis通过C语言实现了多路复用 轮询的机制,保证了高性能(NIO)</p>
@@ -133,9 +134,41 @@
 <p>redis和Memcache三点不同:支持多数据类型，支持持久化(虽然存储在内存中，但是会定期存储到磁盘中)，单线程+多路IO复用</p>
 <h3 id="Redis键-key"><a href="#Redis键-key" class="headerlink" title="Redis键(key)"></a>Redis键(key)</h3><p>set key value 添加</p>
 <p>keys * 查看当前库所有key （匹配:keys *1）<br>exists key 判断某个key是否存在<br>type key 查看你的key是什么类型<br>del key 删除指定的key数据<br>unlink key 根据value选择非阻塞删除(仅将keys从keyspace元数据中删除，真正的删除会在后续异步操作)</p>
-<p>expire key 10  10秒钟:为给定的key设置过期时间<br>ttl key 查看还有多少秒国企，-1表示永不过期，-2表示已过期</p>
+<p>expire key 10  10秒钟:为给定的key设置过期时间<br>ttl key 查看还有多少秒过期，-1表示永不过期，-2表示已过期</p>
 <h4 id="五大数据类型"><a href="#五大数据类型" class="headerlink" title="五大数据类型"></a>五大数据类型</h4><h5 id="String"><a href="#String" class="headerlink" title="String"></a>String</h5><p>是Redis中最基本的类型， 是二进制安全的。意味着Redis的string可以包含任何数据如jpg图片，或者序列化的对象</p>
 <p>是redis最基本的类型，一个Redis中字符串value最多可以是512M</p>
+<p><strong>value的底层实现</strong><br>String的数据结构为简单动态字符串，是可以修改的字符串，内部结构实现上类似于Java的ArrayList，采用预分配冗余空间的方式减少内存的频繁分配。</p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/redis%E7%9A%84string%E5%BA%95%E5%B1%82.png" alt="String"></p>
+<p>set key value 添加键值对，相同key会覆盖<br>get key  查询对应键值<br>append key value 将给定的value追加到原值末尾。返回长度<br>strlen key 获取值的长度<br>setnx key value 只有key不存在时 设置key的值</p>
+<p>incr key 将key对应的value中存储的数字值增一，只能对数字值操作，如果为空，新增值为1<br>decr key 将key对应的value中储存的数字值减一，只能对数字值操作，如果为空，新增值为-1</p>
+<p>mset key value key value ….  添加多个键值对，相同key会覆盖<br>mget key  查询多个key对应键值<br>msetnx key value key value …. ———- 只有多个都key不存在时 设置key的值 <strong>原子性</strong></p>
+<p>getrange key value起始位置 value结束位置 – 获取value的起始-结束<br>setrange key 起始位置 value字符 ———– 从起始位置改变</p>
+<p>setex key 过期时间 value 设置键值的同事，设置过期时间<br>getset key value 以新值换旧值，会返回旧值</p>
+<p><strong>原子性</strong><br>所谓原子操作是指不会被线程调度机制打断的操作<br>操作一旦开始，就一直运行到结束，中间不会有任何context switch(切换到另一个线程)</p>
+<ul>
+<li>单线程中，能够在单条指令中完成的操作都可以认为是原子操作，因为中断只能发生于指令之间</li>
+<li>在多线程中，不能被其他进程(线程)打断的操作就叫原子操作。</li>
+</ul>
+<p>redis单命令的原子性主要得益于Redis的单线程</p>
+<p><strong>java中的i++是否是原子操作</strong></p>
+<p>i=0; 两个线程分别对i进行++100次，值是多少?<br>i++ 先将i赋给新变量 然后++ </p>
+<p>i++分为取值 ， ++ ，赋值操作<br>极端情况：b抢到线权，开始取值取到0，还没开始++时a抢到了线权，i取值为0，一直加到99；<br>b又抢回线权，开始++操作，i从0加到1。a中i=99就相当于被覆盖了，此时a只能再加1次了，b还能加99次。<br>a抢回线权，取值为1，还没开始++时，又被b抢到线权，i一直加到100结束，a抢回线权，i+1=2，再赋值操作。<br>ab都各自加了100次，最后i就是2。问题出在i++分为三步，取值，++，赋值。a取值后，还没开始++之前，是可以被另一线程b打断的，即使a后面抢回线权，它也不会再取值，会继续执行++操作。</p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/iadd2022_2_2.png" alt="i"></p>
+<h5 id="List"><a href="#List" class="headerlink" title="List"></a>List</h5><p>单键多值<br>Redis列表是简单的字符串列表，按照插入顺序排序。可以添加一个元素到列表的头部(左)或者尾部(右)</p>
+<p>它的底层实际是个<strong>双向链表</strong>，对两端的操作性能很高，通过索引下标的操作中间的结点性能会比较差</p>
+<hr>
+<p>数据结构是快速链表quickList。<br>首先在元素列表比较少的情况下会使用一块连续的内部存储，这个结构是ziplist，也是压缩列表<br>他将所有的元素紧挨着一起存储，分配的是一块连续的内存</p>
+<p>当数据量比较多的时候才会改成quicklist。</p>
+<p>因为普通的链表需要的附加指针空间太大，比较浪费空间。比如在这个列表里只存了int型的数据，结构上还需要两个额外的指针prew和next</p>
+<p>ziplist&lt;–&gt;ziplist&lt;–&gt;ziplist</p>
+<p>Redis将链表和ziplist结合起来组成了quicklist。也就是将多个ziplist使用双向指针串起来使用。这样既满足了快速插入性能，又不会出现太大的空间冗余。</p>
+<hr>
+<p>lpush/rpush key value1 value2   左/右插入<br>lpop/rpop key 左/右吐出一个值。值在键在，值光键亡</p>
+<p>rpoplpush key1 key2   key1列表右边吐出一个值，插到key2列表左边</p>
+<p>lrange key strat stop 按照索引下标(<strong>0开始</strong>)获得元素 从左到右(0 -1表示所有值)<br>lrange mylist 0 -1   0是左边第一个，-1是右边第一个(0-1表示获取所有)</p>
+<p>lindex key index 按照索引下标获得元素(从左到右)<br>llen key 获得列表长度</p>
+<p>linsert key before “value” “newvalue” 在value后边插入newvalue<br>lrem key n value 从左边删除n个value(从左到右)<br>lset key index value 将列表key下标为inde的值替换为value</p>
+<h5 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h5><p>Redis set 对外提供的功能与list类似，是一个列表的功能，但是set可以自动排重，当你需要存储一个列表数据，又不希望出现重复数据时，set是一个很好的选泽</p>
  
       <!-- reward -->
       
