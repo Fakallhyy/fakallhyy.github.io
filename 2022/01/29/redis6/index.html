@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">4.5k</span>
+            <span class="post-count">7.2k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">16 min</span>
+            <span class="post-count">26 min</span>
         </span>
     </span>
 </div>
@@ -224,8 +224,12 @@
 <h4 id="事务操作"><a href="#事务操作" class="headerlink" title="事务操作"></a>事务操作</h4><p>从输入Multi命令开始，输入的命令都会依次进入命令队列中，但不会执行，直到输入Exec后，Redis会将之前的命令队列中的命令依次执行。<br>组队的过程中可以通过discard来放弃组队。<br><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202112126.png" alt="嗯"></p>
 <h4 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h4><p>组队中某个命令出现了报告错误，执行时整个的所有队列都会被取消。</p>
 <p>如果执行阶段某个命令报出了错误，则只有报错的命令不会被执行，而其他的命令都会执行，不会回滚。</p>
-<h4 id="事务冲突"><a href="#事务冲突" class="headerlink" title="事务冲突"></a>事务冲突</h4><h5 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h5><p>悲观锁(Pessimistic Lock), 顾名思义，就是很悲观，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会block直到它拿到锁。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁。</p>
-<h5 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h5><p>乐观锁(Optimistic Lock), 顾名思义，就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。<strong>乐观锁适用于多读的应用类型，这样可以提高吞吐量。Redis就是利用这种check-and-set机制实现事务的。</strong></p>
+<h4 id="事务冲突"><a href="#事务冲突" class="headerlink" title="事务冲突"></a>事务冲突</h4><ul>
+<li><p>悲观锁(Pessimistic Lock), 顾名思义，就是很悲观，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会block直到它拿到锁。传统的关系型数据库里边就用到了很多这种锁机制，比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁。</p>
+</li>
+<li><p>乐观锁(Optimistic Lock), 顾名思义，就是很乐观，每次去拿数据的时候都认为别人不会修改，所以不会上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，可以使用版本号等机制。<strong>乐观锁适用于多读的应用类型，这样可以提高吞吐量。Redis就是利用这种check-and-set机制实现事务的。</strong></p>
+</li>
+</ul>
 <p>抢票就是乐观锁</p>
 <p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202112139.png" alt="p2"></p>
 <p>watch<br>在执行multi之前，先执行watch key1 [key2],可以监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。</p>
@@ -244,6 +248,100 @@
 </ul>
 </li>
 </ul>
+<h4 id="秒杀案例"><a href="#秒杀案例" class="headerlink" title="秒杀案例"></a>秒杀案例</h4><p>商品库存  秒杀人员</p>
+<h5 id="秒杀并发模拟"><a href="#秒杀并发模拟" class="headerlink" title="秒杀并发模拟"></a>秒杀并发模拟</h5><p>使用工具ab模拟测试 yum install httpd-tools</p>
+<p>vim postfile 模拟表单提交参数,以&amp;符号结尾;存放当前目录。<br>内容：prodid=0101&amp;</p>
+<p>ab -n 2000 -c 200 -k -p ~/postfile -T application/x-www-form-urlencoded <a target="_blank" rel="noopener" href="http://192.168.1.8:8081/Seckill/doseckill">http://192.168.1.8:8081/Seckill/doseckill</a></p>
+<p>但会出现超卖现象(秒杀结束后，还会秒杀成功，库存边负数)</p>
+<p>用乐观锁淘汰用户</p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202121148.png" alt="p2"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;增加乐观锁</span><br><span class="line">jedis.watch(qtkey);</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;3.判断库存</span><br><span class="line">String qtkeystr &#x3D; jedis.get(qtkey);</span><br><span class="line">if(qtkeystr&#x3D;&#x3D;null || &quot;&quot;.equals(qtkeystr.trim())) &#123;</span><br><span class="line">System.out.println(&quot;未初始化库存&quot;);</span><br><span class="line">jedis.close();</span><br><span class="line">return false ;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">int qt &#x3D; Integer.parseInt(qtkeystr);</span><br><span class="line">if(qt&lt;&#x3D;0) &#123;</span><br><span class="line">System.err.println(&quot;已经秒光&quot;);</span><br><span class="line">jedis.close();</span><br><span class="line">return false;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;增加事务</span><br><span class="line">Transaction multi &#x3D; jedis.multi();</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;4.减少库存</span><br><span class="line">&#x2F;&#x2F;jedis.decr(qtkey);</span><br><span class="line">multi.decr(qtkey);</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;5.加人</span><br><span class="line">&#x2F;&#x2F;jedis.sadd(usrkey, uid);</span><br><span class="line">multi.sadd(usrkey, uid);</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;执行事务</span><br><span class="line">List&lt;Object&gt; list &#x3D; multi.exec();</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;判断事务提交是否失败</span><br><span class="line">if(list&#x3D;&#x3D;null || list.size()&#x3D;&#x3D;0) &#123;</span><br><span class="line">System.out.println(&quot;秒杀失败&quot;);</span><br><span class="line">jedis.close();</span><br><span class="line">return false;</span><br><span class="line">&#125;</span><br><span class="line">System.err.println(&quot;秒杀成功&quot;);</span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+
+<h5 id="继续增加并发测试"><a href="#继续增加并发测试" class="headerlink" title="继续增加并发测试"></a>继续增加并发测试</h5><p>ab -n 2000 -c 200 -k -p postfile -T ‘application/x-www-form-urlencoded’ <a target="_blank" rel="noopener" href="http://192.168.140.1:8080/seckill/doseckill">http://192.168.140.1:8080/seckill/doseckill</a></p>
+<p>增加-r参数，-r   Don’t exit on socket receive errors.<br>ab -n 2000 -c 100 -r -p postfile -T ‘application/x-www-form-urlencoded’ <a target="_blank" rel="noopener" href="http://192.168.140.1:8080/seckill/doseckill">http://192.168.140.1:8080/seckill/doseckill</a></p>
+<ul>
+<li>已经秒光可是还有库存<br>ab -n 2000 -c 100 -p postfile -T ‘application/x-www-form-urlencoded’ <a target="_blank" rel="noopener" href="http://192.168.137.1:8080/seckill/doseckill">http://192.168.137.1:8080/seckill/doseckill</a></li>
+</ul>
+<p>已经秒光，可是还有库存。原因，就是乐观锁导致很多请求都失败。先点的没秒到，后点的可能秒到了。</p>
+<p>连接超时，通过连接池解决</p>
+<ul>
+<li><p>连接池<br>节省每次连接redis服务带来的消耗，把连接好的实例反复利用。<br>通过参数管理连接的行为<br>JedisPoolUtil.java</p>
+</li>
+<li><p>链接池参数</p>
+<ul>
+<li>MaxTotal：控制一个pool可分配多少个jedis实例，通过pool.getResource()来获取；如果赋值为-1，则表示不限制；如果pool已经分配了MaxTotal个jedis实例，则此时pool的状态为exhausted。</li>
+<li>maxIdle：控制一个pool最多有多少个状态为idle(空闲)的jedis实例；</li>
+<li>MaxWaitMillis：表示当borrow一个jedis实例时，最大的等待毫秒数，如果超过等待时间，则直接抛JedisConnectionException；</li>
+<li>testOnBorrow：获得一个jedis实例的时候是否检查连接可用性（ping()）；如果为true，则得到的jedis实例均是可用的；</li>
+</ul>
+</li>
+</ul>
+<h5 id="解决库存遗留问题"><a href="#解决库存遗留问题" class="headerlink" title="解决库存遗留问题"></a>解决库存遗留问题</h5><h6 id="LUA脚本"><a href="#LUA脚本" class="headerlink" title="LUA脚本"></a>LUA脚本</h6><p>Lua 是一个小巧的脚本语言，Lua脚本可以很容易的被C/C++ 代码调用，也可以反过来调用C/C++的函数，Lua并没有提供强大的库，一个完整的Lua解释器不过200k，所以Lua不适合作为开发独立应用程序的语言，而是作为嵌入式脚本语言。<br>很多应用程序、游戏使用LUA作为自己的嵌入式脚本语言，以此来实现可配置性、可扩展性。<br>这其中包括魔兽争霸地图、魔兽世界、博德之门、愤怒的小鸟等众多游戏插件或外挂。<br><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/lua/">https://www.w3cschool.cn/lua/</a></p>
+<h6 id="脚本的优势"><a href="#脚本的优势" class="headerlink" title="脚本的优势"></a>脚本的优势</h6><p>将复杂的或者多步的redis操作，写为一个脚本，一次提交给redis执行，减少反复连接redis的次数。提升性能。</p>
+<p>LUA脚本是类似redis事务，有一定的原子性，不会被其他命令插队，可以完成一些redis事务性的操作。</p>
+<p>但是注意redis的lua脚本功能，只有在Redis 2.6以上的版本才可以使用。</p>
+<p>利用lua脚本淘汰用户，解决超卖问题。<br>redis 2.6版本以后，通过lua脚本解决<strong>争抢问题</strong>，实际上是<strong>redis 利用其单线程的特性，用任务队列的方式解决多任务并发问题。</strong></p>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><h4 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h4><p>RDB（Redis DataBase）<br>在指定的时间间隔内将内存中的数据集快照写入磁盘， 也就是行话讲的Snapshot快照，它恢复时是将快照文件直接读到内存里</p>
+<hr>
+<p>Redis会单独创建（fork）一个子进程来进行持久化，会先将数据写入到 一个临时文件中，待持久化过程都结束了，再用这个临时文件替换上次持久化好的文件。 整个过程中，主进程是不进行任何IO操作的，这就确保了极高的性能 如果需要进行大规模数据的恢复，且对于数据恢复的完整性不是非常敏感，那RDB方式要比AOF方式更加的高效。RDB的缺点是<strong>最后一次持久化后的数据可能丢失。</strong> </p>
+<hr>
+<h5 id="Fork"><a href="#Fork" class="headerlink" title="Fork"></a>Fork</h5><ul>
+<li>Fork的作用是复制一个与当前进程一样的进程。新进程的所有数据（变量、环境变量、程序计数器等） 数值都和原进程一致，但是是一个全新的进程，并作为原进程的子进程</li>
+<li>在Linux程序中，fork()会产生一个和父进程完全相同的子进程，但子进程在此后多会exec系统调用，出于效率考虑，Linux中引入了<strong>写时复制技术”</strong></li>
+<li>一般情况父进程和子进程会共用同一段物理内存，只有进程空间的各段的内容要发生变化时，才会将父进程的内容复制一份给子进程。</li>
+</ul>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202121637.png" alt="RDB流程"></p>
+<h6 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h6><ul>
+<li>适合大规模的数据恢复</li>
+<li>对数据完整性和一致性要求不高更适合使用</li>
+<li>节省磁盘空间</li>
+<li>恢复速度快</li>
+</ul>
+<h6 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h6><ul>
+<li>Fork的时候，内存中的数据被克隆了一份，大致2倍的膨胀性需要考虑</li>
+<li>虽然Redis在fork时使用了写时拷贝技术,但是如果数据庞大时还是比较消耗性能。</li>
+<li>在备份周期在一定间隔时间做一次备份，所以如果Redis意外down掉的话，就会丢失最后一次快照后的所有修改。</li>
+</ul>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202121749.png" alt="rdb备份"></p>
+<h4 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h4><p>AOF（Append Only File）</p>
+<p><strong>以日志的形式来记录每个写操作（增量保存）</strong>，将Redis执行过的所有写指令记录下来(<strong>读操作不记录</strong>)， <strong>只许追加文件但不可以改写文件</strong>，redis启动之初会读取该文件重新构建数据，换言之，redis 重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作</p>
+<p>需要修改配置文件<br>appendonly yes<br><em>AOF和RDB同时开启，系统默认取AOF的数据（数据不会存在丢失）</em></p>
+<h5 id="AOF启动-修复-恢复"><a href="#AOF启动-修复-恢复" class="headerlink" title="AOF启动/修复/恢复"></a>AOF启动/修复/恢复</h5><ul>
+<li>AOF的备份机制和性能虽然和RDB不同, 但是备份和恢复的操作同RDB一样，都是拷贝备份文件，需要恢复时再拷贝到Redis工作目录下，启动系统即加载。</li>
+<li>正常恢复<ul>
+<li>修改默认的appendonly no，改为yes</li>
+<li>将有数据的aof文件复制一份保存到对应目录(查看目录：config get dir)</li>
+<li>恢复：重启redis然后重新加载</li>
+</ul>
+</li>
+<li>异常恢复<ul>
+<li>修改默认的appendonly no，改为yes</li>
+<li>如遇到AOF文件损坏，通过/usr/local/bin/redis-check-aof–fix appendonly.aof进行恢复</li>
+<li>备份被写坏的AOF文件</li>
+<li>恢复：重启redis，然后重新加载</li>
+</ul>
+</li>
+</ul>
+<h5 id="Rewrite压缩"><a href="#Rewrite压缩" class="headerlink" title="Rewrite压缩"></a>Rewrite压缩</h5><p>AOF采用文件追加方式，文件会越来越大为避免出现此种情况，新增了重写机制, 当AOF文件的大小超过所设定的阈值时，Redis就会启动AOF文件的内容压缩， 只保留可以恢复数据的最小指令集.可以使用命令bgrewriteaof</p>
+<p>AOF文件持续增长而过大时，会fork出一条新进程来将文件重写(也是先写临时文件最后再rename)，<strong>redis4.0版本后的重写，是指上就是把rdb 的快照，以二级制的形式附在新的aof头部，作为已有的历史数据，替换掉原来的流水账操作。</strong></p>
+<p>no-appendfsync-on-rewrite：</p>
+<p>如果 no-appendfsync-on-rewrite=yes ,不写入aof文件只写入缓存，用户请求不会阻塞，但是在这段时间如果宕机会丢失这段时间的缓存数据。（降低数据安全性，提高性能）</p>
+<p>如果 no-appendfsync-on-rewrite=no,  还是会把数据往磁盘里刷，但是遇到重写操作，可能会发生阻塞。（数据安全，但是性能降低）</p>
+<p><strong>触发机制，何时重写</strong></p>
+<p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
+<p>重写虽然可以节约大量磁盘空间，减少恢复时间。但是每次重写还是有一定的负担的，因此设定Redis要满足一定条件才会进行重写。</p>
+<p>auto-aof-rewrite-percentage：设置重写的基准值，文件达到100%时开始重写（文件是原来重写后文件的2倍时触发）</p>
+<p>auto-aof-rewrite-min-size：设置重写的基准值，最小文件64MB。达到这个值开始重写。</p>
+<p>例如：文件达到70MB开始重写，降到50MB，下次什么时候开始重写？100MB<br>系统载入时或者上次重写完毕时，Redis会记录此时AOF大小，设为base_size,<br>如果Redis的AOF当前大小&gt;= base_size +base_size*100% (默认)且当前大小&gt;=64mb(默认)的情况下，Redis会对AOF进行重写。</p>
+<h6 id="重写流程"><a href="#重写流程" class="headerlink" title="重写流程"></a>重写流程</h6><ul>
+<li>bgrewriteaof触发重写，判断是否当前有bgsave或bgrewriteaof在运行，如果有，则等待该命令结束后再继续执行。</li>
+<li>主进程fork出子进程执行重写操作，保证主进程不会阻塞。</li>
+<li>子进程遍历redis内存中数据到临时文件，客户端的写请求同时写入aof_buf缓冲区和aof_rewrite_buf重写缓冲区保证原AOF文件完整以及新AOF文件生成期间的新的数据修改动作不会丢失。</li>
+<li>子进程写完新的AOF文件后，向主进程发信号，父进程更新统计信息。 主进程把aof_rewrite_buf中的数据写入到新的AOF文件。</li>
+<li>使用新的AOF文件覆盖旧的AOF文件，完成AOF重写。</li>
+</ul>
+<p>备份机制更稳健，丢失数据概率更低。<br>可读的日志文本，通过操作AOF稳健，可以处理误操作。</p>
+<p>比起RDB占用更多的磁盘空间。<br>恢复备份速度要慢。<br>每次读写都同步的话，有一定的性能压力。<br>存在个别Bug，造成恢复不能。</p>
  
       <!-- reward -->
       
