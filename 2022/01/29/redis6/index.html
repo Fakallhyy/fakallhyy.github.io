@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    redis6 |  Fakallhyy的博客
+    Redis6 |  Fakallhyy的博客
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -68,7 +68,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  redis6
+  Redis6
 </h1>
  
 
@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">7.2k</span>
+            <span class="post-count">9.5k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">26 min</span>
+            <span class="post-count">35 min</span>
         </span>
     </span>
 </div>
@@ -342,7 +342,71 @@
 </ul>
 <p>备份机制更稳健，丢失数据概率更低。<br>可读的日志文本，通过操作AOF稳健，可以处理误操作。</p>
 <p>比起RDB占用更多的磁盘空间。<br>恢复备份速度要慢。<br>每次读写都同步的话，有一定的性能压力。<br>存在个别Bug，造成恢复不能。</p>
- 
+<h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3><p>主机数据更新后根据配置和策略， 自动同步到备机的master/slaver机制，Master以写为主，Slave以读为主<br><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202131252.png" alt="p3"></p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/98648020e7c3b2db4b986f913c48c6525df92a1b/redis%E5%9B%BE%E7%89%87/202202131942.png" alt="p4"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> JedisSentinelPool jedisSentinelPool=<span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  Jedis <span class="title">getJedisFromSentinel</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">if</span>(jedisSentinelPool==<span class="keyword">null</span>)&#123;</span><br><span class="line">    Set&lt;String&gt; sentinelSet=<span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    sentinelSet.add(<span class="string">&quot;192.168.11.103:26379&quot;</span>);</span><br><span class="line"></span><br><span class="line">    JedisPoolConfig jedisPoolConfig =<span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">    jedisPoolConfig.setMaxTotal(<span class="number">10</span>); <span class="comment">//最大可用连接数</span></span><br><span class="line">    jedisPoolConfig.setMaxIdle(<span class="number">5</span>); <span class="comment">//最大闲置连接数</span></span><br><span class="line">    jedisPoolConfig.setMinIdle(<span class="number">5</span>); <span class="comment">//最小闲置连接数</span></span><br><span class="line">    jedisPoolConfig.setBlockWhenExhausted(<span class="keyword">true</span>); <span class="comment">//连接耗尽是否等待</span></span><br><span class="line">    jedisPoolConfig.setMaxWaitMillis(<span class="number">2000</span>); <span class="comment">//等待时间</span></span><br><span class="line">    jedisPoolConfig.setTestOnBorrow(<span class="keyword">true</span>); <span class="comment">//取连接的时候进行一下测试 ping pong</span></span><br><span class="line"></span><br><span class="line">    jedisSentinelPool=<span class="keyword">new</span> JedisSentinelPool(<span class="string">&quot;mymaster&quot;</span>,sentinelSet,jedisPoolConfig);</span><br><span class="line">    <span class="keyword">return</span> jedisSentinelPool.getResource();</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> jedisSentinelPool.getResource();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="薪火相传"><a href="#薪火相传" class="headerlink" title="薪火相传"></a>薪火相传</h4><p>类比二叉树了属于是<br>上一个Slave可以是下一个slave的Master，Slave同样可以接收其他 slaves的连接和同步请求，那么该slave作为了链条中下一个的master, 可以有效减轻master的写压力,<strong>去中心化</strong>降低风险。</p>
+<p>用 slaveof  ip port<br>中途变更转向:会清除之前的数据，重新建立拷贝最新的<br>风险是一旦某个slave宕机，后面的slave都没法备份<br>主机挂了，从机还是从机，无法写数据了</p>
+<h4 id="反客为主"><a href="#反客为主" class="headerlink" title="反客为主"></a>反客为主</h4><p>当一个master宕机后，后面的slave可以立刻升为master，其后面的slave不用做任何修改。<br>用 slaveof  no one  将从机变为主机。</p>
+<h4 id="复制原理"><a href="#复制原理" class="headerlink" title="复制原理"></a>复制原理</h4><p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202132140.png" alt="p5"></p>
+<h4 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h4><p><strong>反客为主</strong>的自动版，能够后台监控主机是否故障，如果故障了根据投票数自动将从库转换为主库</p>
+<ul>
+<li>先一主二仆模式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">info replication</span><br><span class="line"></span><br><span class="line"># 在自定义的&#x2F;myredis目录下，新建sentinel.conf，名字不能错</span><br><span class="line">sentinel monitor mymaster 0.0.0.0 6379 1</span><br><span class="line"># 其中mymaster为监控对象起的服务器名称， 1 为至少有多少个哨兵同意迁移的数量。 </span><br><span class="line"></span><br><span class="line">redis-sentinel sentinel.conf</span><br><span class="line"></span><br><span class="line"># 当主机挂掉，从机选举中产生新的主机</span><br><span class="line">  (大概10秒左右可以看到哨兵窗口日志，切换了新的主机)</span><br><span class="line">哪个从机会被选举为主机呢？根据优先级别：slave-priority </span><br><span class="line">原主机重启后会变为从机。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><strong>缺点</strong> 复制延时</p>
+<p>由于所有的写操作都是先在Master上操作，然后同步更新到Slave上，<br>所以从Master同步到Slave机器有一定的延迟，<br>当系统很繁忙的时候，延迟问题会更加严重，<br>Slave机器数量的增加也会使这个问题更加严重。</p>
+<h4 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h4><p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202141234.png" alt="p6"></p>
+<h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><p>容量不够，redis如何进行扩容？<br>并发写操作， redis如何分摊？<br><strong>另外，主从模式，薪火相传模式，主机宕机，导致ip地址发生变化，应用程序中配置需要修改对应的主机地址、端口等信息。</strong><br>之前通过代理主机来解决，但是<strong>redis3.0</strong>中提供了解决方案。就是<strong>无中心化集群</strong>配置。</p>
+<p>Redis 集群实现了对Redis的水平扩容，即启动N个redis节点，将整个数据库分布存储在这N个节点中，每个节点存储总数据的1/N。<br>Redis 集群通过分区（partition）来提供一定程度的可用性（availability）： 即使集群中有一部分节点失效或者无法进行通讯， 集群也可以继续处理命令请求。</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>删除持久化数据<br>将rdb,aof文件都删除掉。</p>
+<p>开启daemonize yes<br>Pid文件名字<br>指定端口<br>Log文件名字<br>Dump.rdb名字<br>Appendonly 关掉或者换名字</p>
+<p>cluster-enabled yes    打开集群模式<br>cluster-config-file nodes-6379.conf  设定节点配置文件名<br>cluster-node-timeout 15000   设定节点失联时间，超过该时间（毫秒），集群自动进行主从切换。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">include &#x2F;home&#x2F;bigdata&#x2F;redis.conf</span><br><span class="line">port 6379</span><br><span class="line">pidfile &quot;&#x2F;var&#x2F;run&#x2F;redis_6379.pid&quot;</span><br><span class="line">dbfilename &quot;dump6379.rdb&quot;</span><br><span class="line"></span><br><span class="line"># dir &quot;&#x2F;home&#x2F;bigdata&#x2F;redis_cluster&quot;</span><br><span class="line"># logfile &quot;&#x2F;home&#x2F;bigdata&#x2F;redis_cluster&#x2F;redis_err_6379.log&quot;</span><br><span class="line"></span><br><span class="line">cluster-enabled yes</span><br><span class="line">cluster-config-file nodes-6379.conf</span><br><span class="line">cluster-node-timeout 15000</span><br></pre></td></tr></table></figure>
+
+<p>使用查找替换修改另外5个文件<br>启动6个redis</p>
+<p>将六个节点合成一个集群<br>组合之前，请确保所有redis实例启动后，nodes-xxxx.conf文件都生成正常。</p>
+<p>cd  /opt/redis-6.2.1/src</p>
+<p>–replicas 1 采用最简单的方式配置集群，一台主机，一台从机，正好三组。</p>
+<p>redis-cli –cluster create –cluster-replicas 1 192.168.11.101:6379 192.168.11.101:6380 192.168.11.101:6381 192.168.11.101:6389 192.168.11.101:6390 192.168.11.101:6391</p>
+<p>可能直接进入读主机，存储数据时，会出现MOVED重定向操作。所以，应该以集群方式登录。</p>
+<p>redis-cli -c -p 6379 采用集群策略连接，设置数据会自动切换到相应的写主机</p>
+<ul>
+<li>通过 cluster nodes 命令查看集群信息</li>
+</ul>
+<p>一个集群至少要有三个主节点。<br>选项 –cluster-replicas 1 表示我们希望为集群中的每个主节点创建一个从节点。<br>分配原则尽量保证每个主数据库运行在不同的IP地址，每个从库和主库不在一个IP地址上。</p>
+<ul>
+<li>什么是slots(插槽)</li>
+</ul>
+<p>[OK] All 16384 slots covered.<br>一个 Redis 集群包含 16384 个插槽（hash slot）， 数据库中的每个键都属于这 16384 个插槽的其中一个，<br>集群使用公式 CRC16(key) % 16384 来计算键 key 属于哪个槽， 其中 CRC16(key) 语句用于计算键 key 的 CRC16 校验和 。<br>集群中的每个节点负责处理一部分插槽。 举个例子， 如果一个集群可以有主节点， 其中：<br>节点 A 负责处理 0 号至 5460 号插槽。<br>节点 B 负责处理 5461 号至 10922 号插槽。<br>节点 C 负责处理 10923 号至 16383 号插槽。</p>
+<ul>
+<li>在集群中录入值</li>
+</ul>
+<p>在redis-cli每次录入、查询键值，redis都会计算出该key应该送往的插槽，如果不是该客户端对应服务器的插槽，redis会报错，并告知应前往的redis实例地址和端口。<br>redis-cli客户端提供了 –c 参数实现自动重定向。<br>如 redis-cli  -c –p 6379 登入后，再录入、查询键值对可以自动重定向。<br>不在一个slot下的键值，是不能使用mget,mset等多键操作。<br>可以通过{}来定义组的概念，从而使key中{}内相同内容的键值对放到一个slot中去。</p>
+<ul>
+<li>查询集群中的值<br>CLUSTER GETKEYSINSLOT slot count 返回 count 个 slot 槽中的键。</li>
+</ul>
+<p>显然，集群中自动设置了哨兵</p>
+<ul>
+<li>故障恢复<br>如果某一段插槽的主从都挂掉，而cluster-require-full-coverage 为yes ，那么 ，整个集群都挂掉<br>如果某一段插槽的主从都挂掉，而cluster-require-full-coverage 为no ，那么，该插槽数据全都不能使用，也无法存储。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisClusterTest</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; </span><br><span class="line">     Set&lt;HostAndPort&gt;set =<span class="keyword">new</span> HashSet&lt;HostAndPort&gt;();</span><br><span class="line">     set.add(<span class="keyword">new</span> HostAndPort(<span class="string">&quot;192.168.31.211&quot;</span>,<span class="number">6379</span>));</span><br><span class="line">     JedisCluster jedisCluster=<span class="keyword">new</span> JedisCluster(set);</span><br><span class="line">     jedisCluster.set(<span class="string">&quot;k1&quot;</span>, <span class="string">&quot;v1&quot;</span>);</span><br><span class="line">     System.out.println(jedisCluster.get(<span class="string">&quot;k1&quot;</span>));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>实现扩容<br>分摊压力<br>无中心配置相对简单</p>
+<h4 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h4><p>多键操作是不被支持的<br>多键的Redis事务是不被支持的。lua脚本不被支持<br>由于集群方案出现较晚，很多公司已经采用了其他的集群方案，而代理或者客户端分片的方案想要迁移至redis cluster，需要整体迁移而不是逐步过渡，复杂度较大。</p>
+<h3 id="应用问题"><a href="#应用问题" class="headerlink" title="应用问题"></a>应用问题</h3><h4 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h4><p>key对应的数据在数据源并不存在，每次针对此key的请求从缓存获取不到，请求都会压到数据源，从而可能压垮数据源。比如用一个不存在的用户id获取用户信息，不论缓存还是数据库都没有，若黑客利用此漏洞进行攻击可能压垮数据库。</p>
+<p>1.应用服务器压力变大了<br>2.Redis命中率降低<br>3.一直查询数据库</p>
+<p>1.Redis查询不到数据<br>2.出现很多非正常url访问</p>
+<p>解决方案</p>
+<ul>
+<li>对空值缓存：如果一个查询返回的数据为空（不管是数据是否不存在），我们仍然把这个空结果（null）进行缓存，设置空结果的过期时间会很短，最长不超过五分钟</li>
+<li>设置可访问的名单（白名单）：<br>使用bitmaps类型定义一个可以访问的名单，名单id作为bitmaps的偏移量，每次访问和bitmap里面的id进行比较，如果访问id不在bitmaps里面，进行拦截，不允许访问。</li>
+<li>采用布隆过滤器：(布隆过滤器（Bloom Filter）是1970年由布隆提出的。它实际上是一个很长的二进制向量(位图)和一系列随机映射函数（哈希函数）。<br>布隆过滤器可以用于检索一个元素是否在一个集合中。它的优点是空间效率和查询时间都远远超过一般的算法，缺点是有一定的误识别率和删除困难。)<br>将所有可能存在的数据哈希到一个足够大的bitmaps中，一个一定不存在的数据会被 这个bitmaps拦截掉，从而避免了对底层存储系统的查询压力。</li>
+<li>进行实时监控：当发现Redis的命中率开始急速降低，需要排查访问对象和访问的数据，和运维人员配合，可以设置黑名单限制服务</li>
+</ul>
+<h4 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h4> 
       <!-- reward -->
       
       <div id="reword-out">
