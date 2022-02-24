@@ -139,7 +139,7 @@
 <p>是redis最基本的类型，一个Redis中字符串value最多可以是512M</p>
 <hr>
 <p><strong>value的底层实现</strong><br>String的数据结构为简单动态字符串，是可以修改的字符串，内部结构实现上类似于Java的ArrayList，采用预分配冗余空间的方式减少内存的频繁分配。</p>
-<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/redis%E7%9A%84string%E5%BA%95%E5%B1%82.png" alt="String"></p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/redis%E7%9A%84string%E5%BA%95%E5%B1%82.png" alt="String"></p>
 <hr>
 <p>set key value 添加键值对，相同key会覆盖<br>get key  查询对应键值<br>append key value 将给定的value追加到原值末尾。返回长度<br>strlen key 获取值的长度<br>setnx key value 只有key不存在时 设置key的值</p>
 <p>incr key 将key对应的value中存储的数字值增一，只能对数字值操作，如果为空，新增值为1<br>decr key 将key对应的value中储存的数字值减一，只能对数字值操作，如果为空，新增值为-1</p>
@@ -155,7 +155,7 @@
 <p><strong>java中的i++是否是原子操作</strong></p>
 <p>i=0; 两个线程分别对i进行++100次，值是多少?<br>i++ 先将i赋给新变量 然后++ </p>
 <p>i++分为取值 ， ++ ，赋值操作<br>极端情况：b抢到线权，开始取值取到0，还没开始++时a抢到了线权，i取值为0，一直加到99；<br>b又抢回线权，开始++操作，i从0加到1。a中i=99就相当于被覆盖了，此时a只能再加1次了，b还能加99次。<br>a抢回线权，取值为1，还没开始++时，又被b抢到线权，i一直加到100结束，a抢回线权，i+1=2，再赋值操作。<br>ab都各自加了100次，最后i就是2。问题出在i++分为三步，取值，++，赋值。a取值后，还没开始++之前，是可以被另一线程b打断的，即使a后面抢回线权，它也不会再取值，会继续执行++操作。</p>
-<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/iadd2022_2_2.png" alt="i"></p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/iadd2022_2_2.png" alt="i"></p>
 <h5 id="List"><a href="#List" class="headerlink" title="List"></a>List</h5><p>单键多值<br>Redis列表是简单的字符串列表，按照插入顺序排序。可以添加一个元素到列表的头部(左)或者尾部(右)</p>
 <p>它的底层实际是个<strong>双向链表</strong>，对两端的操作性能很高，通过索引下标的操作中间的结点性能会比较差</p>
 <hr>
@@ -203,11 +203,11 @@
 <p>zincrby key increment value     为元素的score加上增量<br>zrem  key value  删除该集合下，指定值的元素<br>zcount key min max 统计该集合，分数区间内的元素个数<br>zrank key value  返回该值在集合中的排名，从0开始。</p>
 <p>用zset实现一个文章访问量的排行榜</p>
 <h6 id="跳跃表"><a href="#跳跃表" class="headerlink" title="跳跃表"></a>跳跃表</h6><p>跳跃表(跳表)<br>有序集合在生活中比较常见，例如根据成绩对学生排名，根据得分对玩家排名等。对于有序集合的底层实现，可以用数组、平衡树、链表等。数组不便元素的插入、删除；平衡树或红黑树虽然效率高但结构复杂；链表查询需要遍历所有效率低。Redis采用的是跳跃表。跳跃表效率堪比红黑树，实现远比红黑树简单。</p>
-<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202041500.png" alt="续"></p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202041500.png" alt="续"></p>
 <h3 id="Redis配置文件"><a href="#Redis配置文件" class="headerlink" title="Redis配置文件"></a>Redis配置文件</h3><p>pdf P26</p>
 <h3 id="Redis的发布和订阅"><a href="#Redis的发布和订阅" class="headerlink" title="Redis的发布和订阅"></a>Redis的发布和订阅</h3><p>Redis 发布订阅 (pub/sub) 是一种消息通信模式：发送者 (pub) 发送消息，订阅者 (sub) 接收消息</p>
 <p>Redis 客户端可以订阅任意数量的频道</p>
-<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202042119.png" alt="续"></p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202042119.png" alt="续"></p>
 <h3 id="新数据类型"><a href="#新数据类型" class="headerlink" title="新数据类型"></a>新数据类型</h3><p><strong>Bitmaps</strong></p>
 <ul>
 <li>Bitmaps本身不是一种数据类型， 实际上它就是字符串（key-value） ， 但是它可以对字符串的位进行操作。</li>
@@ -221,7 +221,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#bind 127.0.0.1 -::1</span><br><span class="line">bind 0.0.0.0</span><br><span class="line"></span><br><span class="line">#protected-mode yes</span><br><span class="line">protected-mode no</span><br><span class="line"></span><br><span class="line">#daemonize no</span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line">logfile &#x2F;url&#x2F;local&#x2F;bin&#x2F;redis-log.log</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h3 id="模拟验证码"><a href="#模拟验证码" class="headerlink" title="模拟验证码"></a>模拟验证码</h3><h3 id="springboot整合redis"><a href="#springboot整合redis" class="headerlink" title="springboot整合redis"></a>springboot整合redis</h3><h3 id="redis事务"><a href="#redis事务" class="headerlink" title="redis事务"></a>redis事务</h3><p>Redis事务是一个单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。<br>Redis事务的主要作用就是串联多个命令防止别的命令插队。</p>
-<h4 id="事务操作"><a href="#事务操作" class="headerlink" title="事务操作"></a>事务操作</h4><p>从输入Multi命令开始，输入的命令都会依次进入命令队列中，但不会执行，直到输入Exec后，Redis会将之前的命令队列中的命令依次执行。<br>组队的过程中可以通过discard来放弃组队。<br><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202112126.png" alt="嗯"></p>
+<h4 id="事务操作"><a href="#事务操作" class="headerlink" title="事务操作"></a>事务操作</h4><p>从输入Multi命令开始，输入的命令都会依次进入命令队列中，但不会执行，直到输入Exec后，Redis会将之前的命令队列中的命令依次执行。<br>组队的过程中可以通过discard来放弃组队。<br><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202112126.png" alt="嗯"></p>
 <h4 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h4><p>组队中某个命令出现了报告错误，执行时整个的所有队列都会被取消。</p>
 <p>如果执行阶段某个命令报出了错误，则只有报错的命令不会被执行，而其他的命令都会执行，不会回滚。</p>
 <h4 id="事务冲突"><a href="#事务冲突" class="headerlink" title="事务冲突"></a>事务冲突</h4><ul>
@@ -231,7 +231,7 @@
 </li>
 </ul>
 <p>抢票就是乐观锁</p>
-<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202112139.png" alt="p2"></p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202112139.png" alt="p2"></p>
 <p>watch<br>在执行multi之前，先执行watch key1 [key2],可以监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。</p>
 <p>unwatch<br>取消 WATCH 命令对所有 key 的监视。<br>如果在执行 WATCH 命令之后，EXEC 命令或DISCARD 命令先被执行了的话，那么就不需要再执行UNWATCH 了。</p>
 <h5 id="Redis事务三特性"><a href="#Redis事务三特性" class="headerlink" title="Redis事务三特性"></a>Redis事务三特性</h5><ul>
@@ -254,7 +254,7 @@
 <p>ab -n 2000 -c 200 -k -p ~/postfile -T application/x-www-form-urlencoded <a target="_blank" rel="noopener" href="http://192.168.1.8:8081/Seckill/doseckill">http://192.168.1.8:8081/Seckill/doseckill</a></p>
 <p>但会出现超卖现象(秒杀结束后，还会秒杀成功，库存边负数)</p>
 <p>用乐观锁淘汰用户</p>
-<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202121148.png" alt="p2"></p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202121148.png" alt="p2"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;增加乐观锁</span><br><span class="line">jedis.watch(qtkey);</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;3.判断库存</span><br><span class="line">String qtkeystr &#x3D; jedis.get(qtkey);</span><br><span class="line">if(qtkeystr&#x3D;&#x3D;null || &quot;&quot;.equals(qtkeystr.trim())) &#123;</span><br><span class="line">System.out.println(&quot;未初始化库存&quot;);</span><br><span class="line">jedis.close();</span><br><span class="line">return false ;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">int qt &#x3D; Integer.parseInt(qtkeystr);</span><br><span class="line">if(qt&lt;&#x3D;0) &#123;</span><br><span class="line">System.err.println(&quot;已经秒光&quot;);</span><br><span class="line">jedis.close();</span><br><span class="line">return false;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;增加事务</span><br><span class="line">Transaction multi &#x3D; jedis.multi();</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;4.减少库存</span><br><span class="line">&#x2F;&#x2F;jedis.decr(qtkey);</span><br><span class="line">multi.decr(qtkey);</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;5.加人</span><br><span class="line">&#x2F;&#x2F;jedis.sadd(usrkey, uid);</span><br><span class="line">multi.sadd(usrkey, uid);</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;执行事务</span><br><span class="line">List&lt;Object&gt; list &#x3D; multi.exec();</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F;判断事务提交是否失败</span><br><span class="line">if(list&#x3D;&#x3D;null || list.size()&#x3D;&#x3D;0) &#123;</span><br><span class="line">System.out.println(&quot;秒杀失败&quot;);</span><br><span class="line">jedis.close();</span><br><span class="line">return false;</span><br><span class="line">&#125;</span><br><span class="line">System.err.println(&quot;秒杀成功&quot;);</span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
 
 <h5 id="继续增加并发测试"><a href="#继续增加并发测试" class="headerlink" title="继续增加并发测试"></a>继续增加并发测试</h5><p>ab -n 2000 -c 200 -k -p postfile -T ‘application/x-www-form-urlencoded’ <a target="_blank" rel="noopener" href="http://192.168.140.1:8080/seckill/doseckill">http://192.168.140.1:8080/seckill/doseckill</a></p>
@@ -290,7 +290,7 @@
 <li>在Linux程序中，fork()会产生一个和父进程完全相同的子进程，但子进程在此后多会exec系统调用，出于效率考虑，Linux中引入了<strong>写时复制技术”</strong></li>
 <li>一般情况父进程和子进程会共用同一段物理内存，只有进程空间的各段的内容要发生变化时，才会将父进程的内容复制一份给子进程。</li>
 </ul>
-<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202121637.png" alt="RDB流程"></p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202121637.png" alt="RDB流程"></p>
 <h6 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h6><ul>
 <li>适合大规模的数据恢复</li>
 <li>对数据完整性和一致性要求不高更适合使用</li>
@@ -302,7 +302,7 @@
 <li>虽然Redis在fork时使用了写时拷贝技术,但是如果数据庞大时还是比较消耗性能。</li>
 <li>在备份周期在一定间隔时间做一次备份，所以如果Redis意外down掉的话，就会丢失最后一次快照后的所有修改。</li>
 </ul>
-<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202121749.png" alt="rdb备份"></p>
+<p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202121749.png" alt="rdb备份"></p>
 <h4 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h4><p>AOF（Append Only File）</p>
 <p><strong>以日志的形式来记录每个写操作（增量保存）</strong>，将Redis执行过的所有写指令记录下来(<strong>读操作不记录</strong>)， <strong>只许追加文件但不可以改写文件</strong>，redis启动之初会读取该文件重新构建数据，换言之，redis 重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作</p>
 <p>需要修改配置文件<br>appendonly yes<br><em>AOF和RDB同时开启，系统默认取AOF的数据（数据不会存在丢失）</em></p>
@@ -342,14 +342,14 @@
 </ul>
 <p>备份机制更稳健，丢失数据概率更低。<br>可读的日志文本，通过操作AOF稳健，可以处理误操作。</p>
 <p>比起RDB占用更多的磁盘空间。<br>恢复备份速度要慢。<br>每次读写都同步的话，有一定的性能压力。<br>存在个别Bug，造成恢复不能。</p>
-<h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3><p>主机数据更新后根据配置和策略， 自动同步到备机的master/slaver机制，Master以写为主，Slave以读为主<br><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202131252.png" alt="p3"></p>
+<h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3><p>主机数据更新后根据配置和策略， 自动同步到备机的master/slaver机制，Master以写为主，Slave以读为主<br><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202131252.png" alt="p3"></p>
 <p><img src="https://gitee.com/regulus25/markdown-picture/raw/98648020e7c3b2db4b986f913c48c6525df92a1b/redis%E5%9B%BE%E7%89%87/202202131942.png" alt="p4"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> JedisSentinelPool jedisSentinelPool=<span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  Jedis <span class="title">getJedisFromSentinel</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">if</span>(jedisSentinelPool==<span class="keyword">null</span>)&#123;</span><br><span class="line">    Set&lt;String&gt; sentinelSet=<span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    sentinelSet.add(<span class="string">&quot;192.168.11.103:26379&quot;</span>);</span><br><span class="line"></span><br><span class="line">    JedisPoolConfig jedisPoolConfig =<span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">    jedisPoolConfig.setMaxTotal(<span class="number">10</span>); <span class="comment">//最大可用连接数</span></span><br><span class="line">    jedisPoolConfig.setMaxIdle(<span class="number">5</span>); <span class="comment">//最大闲置连接数</span></span><br><span class="line">    jedisPoolConfig.setMinIdle(<span class="number">5</span>); <span class="comment">//最小闲置连接数</span></span><br><span class="line">    jedisPoolConfig.setBlockWhenExhausted(<span class="keyword">true</span>); <span class="comment">//连接耗尽是否等待</span></span><br><span class="line">    jedisPoolConfig.setMaxWaitMillis(<span class="number">2000</span>); <span class="comment">//等待时间</span></span><br><span class="line">    jedisPoolConfig.setTestOnBorrow(<span class="keyword">true</span>); <span class="comment">//取连接的时候进行一下测试 ping pong</span></span><br><span class="line"></span><br><span class="line">    jedisSentinelPool=<span class="keyword">new</span> JedisSentinelPool(<span class="string">&quot;mymaster&quot;</span>,sentinelSet,jedisPoolConfig);</span><br><span class="line">    <span class="keyword">return</span> jedisSentinelPool.getResource();</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> jedisSentinelPool.getResource();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="薪火相传"><a href="#薪火相传" class="headerlink" title="薪火相传"></a>薪火相传</h4><p>类比二叉树了属于是<br>上一个Slave可以是下一个slave的Master，Slave同样可以接收其他 slaves的连接和同步请求，那么该slave作为了链条中下一个的master, 可以有效减轻master的写压力,<strong>去中心化</strong>降低风险。</p>
 <p>用 slaveof  ip port<br>中途变更转向:会清除之前的数据，重新建立拷贝最新的<br>风险是一旦某个slave宕机，后面的slave都没法备份<br>主机挂了，从机还是从机，无法写数据了</p>
 <h4 id="反客为主"><a href="#反客为主" class="headerlink" title="反客为主"></a>反客为主</h4><p>当一个master宕机后，后面的slave可以立刻升为master，其后面的slave不用做任何修改。<br>用 slaveof  no one  将从机变为主机。</p>
-<h4 id="复制原理"><a href="#复制原理" class="headerlink" title="复制原理"></a>复制原理</h4><p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202132140.png" alt="p5"></p>
+<h4 id="复制原理"><a href="#复制原理" class="headerlink" title="复制原理"></a>复制原理</h4><p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202132140.png" alt="p5"></p>
 <h4 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h4><p><strong>反客为主</strong>的自动版，能够后台监控主机是否故障，如果故障了根据投票数自动将从库转换为主库</p>
 <ul>
 <li>先一主二仆模式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">info replication</span><br><span class="line"></span><br><span class="line"># 在自定义的&#x2F;myredis目录下，新建sentinel.conf，名字不能错</span><br><span class="line">sentinel monitor mymaster 0.0.0.0 6379 1</span><br><span class="line"># 其中mymaster为监控对象起的服务器名称， 1 为至少有多少个哨兵同意迁移的数量。 </span><br><span class="line"></span><br><span class="line">redis-sentinel sentinel.conf</span><br><span class="line"></span><br><span class="line"># 当主机挂掉，从机选举中产生新的主机</span><br><span class="line">  (大概10秒左右可以看到哨兵窗口日志，切换了新的主机)</span><br><span class="line">哪个从机会被选举为主机呢？根据优先级别：slave-priority </span><br><span class="line">原主机重启后会变为从机。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -358,7 +358,7 @@
 </ul>
 <p><strong>缺点</strong> 复制延时</p>
 <p>由于所有的写操作都是先在Master上操作，然后同步更新到Slave上，<br>所以从Master同步到Slave机器有一定的延迟，<br>当系统很繁忙的时候，延迟问题会更加严重，<br>Slave机器数量的增加也会使这个问题更加严重。</p>
-<h4 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h4><p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/redis%E5%9B%BE%E7%89%87/202202141234.png" alt="p6"></p>
+<h4 id="故障恢复"><a href="#故障恢复" class="headerlink" title="故障恢复"></a>故障恢复</h4><p><img src="https://gitee.com/regulus25/markdown-picture/raw/master/Redis%E5%9B%BE%E7%89%87/202202141234.png" alt="p6"></p>
 <h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><p>容量不够，redis如何进行扩容？<br>并发写操作， redis如何分摊？<br><strong>另外，主从模式，薪火相传模式，主机宕机，导致ip地址发生变化，应用程序中配置需要修改对应的主机地址、端口等信息。</strong><br>之前通过代理主机来解决，但是<strong>redis3.0</strong>中提供了解决方案。就是<strong>无中心化集群</strong>配置。</p>
 <p>Redis 集群实现了对Redis的水平扩容，即启动N个redis节点，将整个数据库分布存储在这N个节点中，每个节点存储总数据的1/N。<br>Redis 集群通过分区（partition）来提供一定程度的可用性（availability）： 即使集群中有一部分节点失效或者无法进行通讯， 集群也可以继续处理命令请求。</p>
 <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>删除持久化数据<br>将rdb,aof文件都删除掉。</p>
@@ -559,6 +559,15 @@
 
    
   <nav class="article-nav">
+    
+      <a href="/2022/02/23/java/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Java
+          
+        </div>
+      </a>
     
     
       <a href="/2022/01/28/git/" class="article-nav-link">
