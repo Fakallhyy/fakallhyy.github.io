@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">126</span>
+            <span class="post-count">344</span>
         </span>
     </span>
 
@@ -114,7 +114,14 @@
 
 <h3 id="3-java数据类型"><a href="#3-java数据类型" class="headerlink" title="3.java数据类型"></a>3.java数据类型</h3><p><img src="https://s1.328888.xyz/2022/08/09/0tMYn.png" alt="p1"></p>
 <p>声明long型常量须在后边加’l’或’L’</p>
- 
+<h3 id="4-Array"><a href="#4-Array" class="headerlink" title="4.Array"></a>4.Array</h3><p>数组的概念：是一种容器，可以同时存放多个数据值。</p>
+<p>数组的特点：</p>
+<ol>
+<li>数组是一种引用数据类型</li>
+<li>数组当中的多个数据，类型必须统一</li>
+<li>数组的长度在程序运行期间不可改变</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    &#x2F;&#x2F;1.动态初始化（指定长度）：在创建数组的时候，直接指定数组当中的数据元素个数。</span><br><span class="line">    int[] arrayA &#x3D; new int[300]; </span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;2.静态初始化（指定内容）：在创建数组的时候，不直接指定数据个数多少，而是直接将具体的数据内容进行指定。</span><br><span class="line">    int[] arrayB &#x3D; new int[] &#123; 5, 15, 25, 40 &#125;; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    double[] array &#x3D; &#123;1,2,3,4,5,6&#125;;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; array.length ; i++)&#123;</span><br><span class="line">        System.out.println(&quot;第&quot;+(i+1) + &quot;个元素的值&#x3D;&quot; + array[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
       <!-- reward -->
       
       <div id="reword-out">
@@ -197,19 +204,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/02/23/Java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="article-nav-link">
+      <a href="/2022/02/23/JVM/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Java数据结构
+            JVM
           
         </div>
       </a>
     
     
-      <a href="/2022/01/29/redis6/" class="article-nav-link">
+      <a href="/2022/02/23/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Redis6</div>
+        <div class="article-nav-title">数据结构</div>
       </a>
     
   </nav>
