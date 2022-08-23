@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">2.6k</span>
+            <span class="post-count">2.9k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">10 min</span>
+            <span class="post-count">12 min</span>
         </span>
     </span>
 </div>
@@ -172,7 +172,16 @@
 <p>4.常用构造器：</p>
 <p>String str1 = new String();<br>String str2 = new String(String original);<br>String str3 = new String(char[] a);<br>String str4 = new String(char[] a, int startIndex, int count);<br>这句意思是：char[] 从 startIndex 起的 count 个字符</p>
 <p>5.String实现了接口Serializable和Comparable，可以串行化和比较大小<br>6.String 是 final 类，不能被继承<br>7.String 有属性 private final char[] value; 用于存放字符串内容。<br>8.value是final属性。其在栈中的地址不能修改，但堆中的内容可以修改。</p>
-<h4 id="9-1-两种创建String对象的区别"><a href="#9-1-两种创建String对象的区别" class="headerlink" title="9.1 两种创建String对象的区别"></a>9.1 两种创建String对象的区别</h4><p>方式一: 直接赋值，String s = “abc”;<br>方式二: 调用构造器 String s2 = new String(“abc”);</p>
+<h4 id="9-1-两种创建String对象的区别"><a href="#9-1-两种创建String对象的区别" class="headerlink" title="9.1 两种创建String对象的区别"></a>9.1 两种创建String对象的区别</h4><p>方式一: 直接赋值，String s = “abc”;<br>先从常量池中查看是否有abc数据空间，如果有，，直接指向；如果没有就先创建，然后指向 s 最终指向的是常量池的空间地址</p>
+<p>方式二: 调用构造器 String s2 = new String(“abc”);<br>先在堆中创建空间，里面维护value属性，堆指向常量池的abc空间。如果常量池中没有abc，就重新创建；如果有，直接通过value指向，最终指向的是堆中的空间地址。</p>
+<p>intern()<br>当调用intern方法时，如果常量池已经包含与equals(Object)方法确定的相当于此String对象的字符串，则返回来自池的字符串。 否则，此String对象将添加到池中，并返回对此String对象的引用。<br>由此可见，对于任何两个字符串s和t，s.intern() == t.intern()是true当且仅当s.equals(t)是true。</p>
+<h4 id="9-2-字符串的特性"><a href="#9-2-字符串的特性" class="headerlink" title="9.2 字符串的特性"></a>9.2 字符串的特性</h4><p>常量相加，看的是池</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String str1 = <span class="string">&quot;aa&quot;</span> + <span class="string">&quot;bb&quot;</span>; <span class="comment">//常量相加，看的是池</span></span><br><span class="line"><span class="comment">//上例由于构造器自身优化，相当于 String str1 = &quot;aabb&quot;;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String a = <span class="string">&quot;aa&quot;</span>;</span><br><span class="line">String b = <span class="string">&quot;bb&quot;</span>;</span><br><span class="line">String str2 = a + b;  <span class="comment">//变量相加，是在堆中</span></span><br></pre></td></tr></table></figure>
+
+<p>上例的底层是如下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">sb.append(a);</span><br><span class="line">sb.append(b);</span><br><span class="line">str2 = sb.toString();  <span class="comment">//sb.toString()：return new String(value, 0, count);</span></span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
