@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">2.9k</span>
+            <span class="post-count">3k</span>
         </span>
     </span>
 
@@ -182,6 +182,11 @@
 
 <p>上例的底层是如下代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">sb.append(a);</span><br><span class="line">sb.append(b);</span><br><span class="line">str2 = sb.toString();  <span class="comment">//sb.toString()：return new String(value, 0, count);</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="10-StringBuffer类"><a href="#10-StringBuffer类" class="headerlink" title="10.StringBuffer类"></a>10.StringBuffer类</h3><p>java.lang.StringBuffer代表可变的字符序列。可以对字符串内容进行增删。</p>
+<p>很多方法和String相同，但StringBuffer是可变长度。同时，StringBuffer是一个容器</p>
+<p>StringBuffer 的直接父类是 AbstractStringBuffer,可以串行化<br>在父类中，AbstractStringBuffer 有属性char[] value不是 final<br>StringBuffer是一个final类，不能被继承</p>
+<p><strong>String对比StringBuffer</strong><br>String 保存字符串常量，其中的值不能更改。每次更新实际上是更改地址，效率较低<br>StringBuffer 保存字符串变量，里面的值可以更改。每次更新是更新内容，不用每次更新地址。</p>
  
       <!-- reward -->
       
@@ -265,19 +270,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/02/23/JVM/" class="article-nav-link">
+      <a href="/2022/02/23/%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            JVM
+            代码随想录
           
         </div>
       </a>
     
     
-      <a href="/2022/02/23/%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/" class="article-nav-link">
+      <a href="/2022/01/29/redis6/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">代码随想录</div>
+        <div class="article-nav-title">Redis6</div>
       </a>
     
   </nav>
