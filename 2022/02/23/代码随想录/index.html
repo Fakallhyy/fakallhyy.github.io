@@ -107,7 +107,7 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="1-Array"><a href="#1-Array" class="headerlink" title="1.Array"></a>1.Array</h3><p>数组的概念：是一种容器，可以同时存放多个数据值。</p>
+  <h3 id="1-数组"><a href="#1-数组" class="headerlink" title="1.数组"></a>1.数组</h3><p>数组的概念：是一种容器，可以同时存放多个数据值。</p>
 <p>数组的特点：</p>
 <ol>
 <li>数组是一种引用数据类型</li>
@@ -116,7 +116,7 @@
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//1.动态初始化（指定长度）：在创建数组的时候，直接指定数组当中的数据元素个数。</span></span><br><span class="line">    <span class="keyword">int</span>[] arrayA = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">300</span>]; </span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.静态初始化（指定内容）：在创建数组的时候，不直接指定数据个数多少，而是直接将具体的数据内容进行指定。</span></span><br><span class="line">    <span class="keyword">int</span>[] arrayB = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">5</span>, <span class="number">15</span>, <span class="number">25</span>, <span class="number">40</span> &#125;; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">double</span>[] array = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length ; i++)&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;第&quot;</span>+(i+<span class="number">1</span>) + <span class="string">&quot;个元素的值=&quot;</span> + array[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="1-1-1数组赋值机制"><a href="#1-1-1数组赋值机制" class="headerlink" title="1.1.1数组赋值机制"></a>1.1.1数组赋值机制</h4><p>1.基本数据类型赋值，赋值方式是值拷贝。这个值就是具体的数据，且互不影响<br>2.数组在默认情况下是引用传递，赋的值是地址，赋值方式为引用传达。</p>
+<p>1.基本数据类型赋值，赋值方式是值拷贝。这个值就是具体的数据，且互不影响<br>2.数组在默认情况下是引用传递，赋的值是地址，赋值方式为引用传达。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] array1 = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">int</span>[] array2 = array1;</span><br><span class="line">array2[<span class="number">0</span>] = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
 
 <p>上述情况下,array[0]也会变成100。因为数组在JVM的栈里是一个地址，指向堆里的一个空间。这两个数组在上述情况下指向同一空间。</p>
@@ -127,7 +127,8 @@
 
 <h4 id="1-1-3-二分法"><a href="#1-1-3-二分法" class="headerlink" title="1.1.3 二分法"></a>1.1.3 二分法</h4><p>二分法要求 必是有序数组 且数组中无重复元素</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//二分法的一种</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Search</span><span class="params">(<span class="keyword">int</span> nums[],<span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">    <span class="comment">//避免不在数组内</span></span><br><span class="line">    <span class="keyword">if</span> (target &lt; nums[<span class="number">0</span>] || target &gt; nums[nums.length - <span class="number">1</span>])&#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>,right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(left &lt;= right)&#123;</span><br><span class="line">        <span class="comment">//int mid = (left + right) / 2;</span></span><br><span class="line">        <span class="comment">//以防left + right整型溢出</span></span><br><span class="line">        <span class="comment">//int mid = left + (right - left) / 2;</span></span><br><span class="line">        <span class="comment">//为了速度更快，采用位运算</span></span><br><span class="line">        <span class="keyword">int</span> mid = left + (right - left) &gt;&gt; <span class="number">1</span>;  <span class="comment">//超时？</span></span><br><span class="line">        <span class="keyword">if</span>(nums[mid] == target) <span class="keyword">return</span> mid;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) left = mid + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &gt; target) right = mid - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
- 
+
+<h4 id="1-1-4-移除元素"><a href="#1-1-4-移除元素" class="headerlink" title="1.1.4 移除元素"></a>1.1.4 移除元素</h4> 
       <!-- reward -->
       
       <div id="reword-out">
@@ -220,9 +221,9 @@
       </a>
     
     
-      <a href="/2022/02/23/java/" class="article-nav-link">
+      <a href="/2022/01/29/redis6/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Java</div>
+        <div class="article-nav-title">Redis6</div>
       </a>
     
   </nav>
