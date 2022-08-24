@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">3.1k</span>
+            <span class="post-count">3.4k</span>
         </span>
     </span>
 
@@ -192,7 +192,17 @@
 
 <p>String 和 StringBuffer的转换</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">String str1 = <span class="string">&quot;abcabc&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法1（构造器）</span></span><br><span class="line">StringBuffer strb1 = <span class="keyword">new</span> StringBuffer(str1);</span><br><span class="line">StringBuffer strb1 = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">strb1 = strb1.append(str1);    <span class="comment">//方法2（先空再append）</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">String str2 = strb1.toString();    <span class="comment">//方法1（toString）</span></span><br><span class="line">String str3 = <span class="keyword">new</span> String(strb1);   <span class="comment">//方法2（构造器）</span></span><br></pre></td></tr></table></figure>
- 
+
+<h3 id="11-StringBuilder-类"><a href="#11-StringBuilder-类" class="headerlink" title="11.StringBuilder 类"></a>11.StringBuilder 类</h3><p>1.一个可变的字符序列。此类提供一个与 StringBuffer 兼容的 API，但不保证同步（有线程安全问题）。该类被设计成 StringBuffer 的一个简易替换，用在字符串缓冲区被单个线程使用的时候。如果可能，建议优先使用该类。因为在大多数实现中，它比起 StringBuffer 要快。</p>
+<p>2.在StringBuilder的主要操作是 append 和 insert 方法。可以重载这些方法，以接受任意类型的数据。</p>
+<hr>
+<p>在父类中有属性char[] value，而且不是final<br>StringBuilder也是一个final类，不能被继承<br>StringBuilder的方法，没有做互斥的处理（没有synchronize），故而存在线程安全问题<br><code>s</code></p>
+<h3 id="12-String-StringBuffer-StringBuilder的对比"><a href="#12-String-StringBuffer-StringBuilder的对比" class="headerlink" title="12.String StringBuffer StringBuilder的对比"></a>12.String StringBuffer StringBuilder的对比</h3><ul>
+<li>String：不可变字符序列，效率低，但复用率高</li>
+<li>StringBuffer：可变字符序列，效率较高，线程安全</li>
+<li>StringBuilder：可变字符序列，效率最高，存在线程安全问题</li>
+</ul>
+<h3 id="13-集合"><a href="#13-集合" class="headerlink" title="13.集合"></a>13.集合</h3> 
       <!-- reward -->
       
       <div id="reword-out">
@@ -275,10 +285,19 @@
    
   <nav class="article-nav">
     
-    
       <a href="/2022/02/23/JVM/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            JVM
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2022/02/23/%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">JVM</div>
+        <div class="article-nav-title">代码随想录</div>
       </a>
     
   </nav>
