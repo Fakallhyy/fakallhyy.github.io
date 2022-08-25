@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">322</span>
+            <span class="post-count">538</span>
         </span>
     </span>
 
@@ -109,7 +109,8 @@
        
   <h3 id="一、JVM与Java体系结构"><a href="#一、JVM与Java体系结构" class="headerlink" title="一、JVM与Java体系结构"></a>一、JVM与Java体系结构</h3><h4 id="1-JVM的架构模型"><a href="#1-JVM的架构模型" class="headerlink" title="1.JVM的架构模型"></a>1.JVM的架构模型</h4><p>线程共享 方法区，堆<br>虚拟机栈，本地方法栈，程序计数器线程独有一份</p>
 <p>Java编译与解释共存<br>翻译字节码(解析执行)， JIT编译器编译执行。</p>
-<h2 id="HotSpot是基于栈的指令集架构"><a href="#HotSpot是基于栈的指令集架构" class="headerlink" title="HotSpot是基于栈的指令集架构"></a>HotSpot是基于栈的指令集架构</h2><ul>
+<p><strong>HotSpot是基于栈的指令集架构</strong></p>
+<ul>
 <li>基于栈式架构的特点设计和实现更简单，是用于资源受限的系统；</li>
 <li>避开了寄存器的分配难题，使用零地址指令方式分配；</li>
 <li>指令流中的指令大部分是零地址指令，其执行过程依赖于操作栈。指令集更小，编译器容易实现。</li>
@@ -123,6 +124,12 @@
 <li>费更少的指令去完成一项操作；</li>
 <li>在大部分情况下，基于寄存器架构的指令集往往都以一地址指令、二进制指令和三地址指令为主，而基于栈式架构的指令集却是以零地址指令为主。</li>
 </ul>
+<h4 id="2-JVM的生命周期"><a href="#2-JVM的生命周期" class="headerlink" title="2.JVM的生命周期"></a>2.JVM的生命周期</h4><p><strong>虚拟机的启动</strong></p>
+<p>Java虚拟机的启动是通过引导类加载器(bootstrap class loader)创建一个初始类来完成的</p>
+<p><strong>虚拟机的执行</strong></p>
+<p>任务:执行Java程序<br>程序开始执行时他才运行，程序结束时他就停止。<br>执行一个所谓Java程序的时候，真真正正在执行的是一个叫做Java虚拟机的进程。</p>
+<p><strong>虚拟机的退出</strong></p>
+<p>正常执行结束<br>遇到异常或错误 异常终止<br>操作系统出现错误导致Java虚拟机进程终止<br>某线程调用Runtime类或System类的exit方法 或Runtime类的halt方法，并且Java安全管理器也允许这次exit或halt操作<br>除此之外，JNI(Java Native Interface)规范描述了用JNI Invocation API来加载或卸载Java虚拟机时，Java虚拟机的退出</p>
  
       <!-- reward -->
       
