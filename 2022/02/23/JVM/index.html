@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">660</span>
+            <span class="post-count">1.2k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">2 min</span>
+            <span class="post-count">4 min</span>
         </span>
     </span>
 </div>
@@ -130,8 +130,23 @@
 <p>任务:执行Java程序<br>程序开始执行时他才运行，程序结束时他就停止。<br>执行一个所谓Java程序的时候，真真正正在执行的是一个叫做Java虚拟机的进程。</p>
 <p><strong>虚拟机的退出</strong></p>
 <p>正常执行结束<br>遇到异常或错误 异常终止<br>操作系统出现错误导致Java虚拟机进程终止<br>某线程调用Runtime类或System类的exit方法 或Runtime类的halt方法，并且Java安全管理器也允许这次exit或halt操作<br>除此之外，JNI(Java Native Interface)规范描述了用JNI Invocation API来加载或卸载Java虚拟机时，Java虚拟机的退出</p>
-<h4 id="3-JVM发展历程"><a href="#3-JVM发展历程" class="headerlink" title="3.JVM发展历程"></a>3.JVM发展历程</h4><p><strong>Sun Classic VM</strong></p>
+<h4 id="3-JVM发展历程"><a href="#3-JVM发展历程" class="headerlink" title="3.JVM发展历程"></a>3.JVM发展历程</h4><p>解释器是程序响应时间<br>编译器是执行性能</p>
+<p><strong>Sun Classic VM</strong></p>
 <p>JDK1.4淘汰<br>内部只提供了解释器(这样的效率低，用JIT编译器会提高效率，JIT编译器会寻找重复率高的代码[热点代码]，然后放到方法区的CodeCache，缓存起来)<br>如果使用JIT编译器，就需要进行外挂，一旦使用了JIT编译器，JIT就接管虚拟机的执行系统。解释器就不再工作<br>现在hotspot内置了此虚拟机</p>
+<p><strong>Exact VM</strong></p>
+<p>Exact memory Management:准确式内存管理<br>虚拟机可以知道内存中某个位置的数据具体是什么类型<br>具备线代高性能虚拟机的雏形（热点探测，编译器与解释器混合工作模式）</p>
+<p>只在Solaris平台短暂使用，最终被Hotspot虚拟机替换</p>
+<p><strong>Sun公司的 HotSpot VM</strong></p>
+<p>JDk1.3 默认虚拟机<br>HotSpot指的就是它的热点代码探测技术<br>通过计数器找到最具编译价值代码，触发即时编译或栈上替换<br>通过编译器与解释器协同同坐，在最优化的程序响应时间与最佳执行性能中取得平衡</p>
+<p><strong>BEA 的 JRockit</strong>   已经被orcle收购</p>
+<p>专注于服务器端应用<br>不太关注程序启动速度(响应时间)，<strong>JRockit内部不包含解析器实现</strong>  全部代码都靠即时编译器编译后执行<br><strong>JRockit JVM是世界上最快的JVM</strong><br>MissionControl服务套件，是一组以极低的开销来监控、管理和分析生产环境中的应用程序的工具</p>
+<p>在JDK8中，在HotSpot的基础上 移植JRockit的优秀特性</p>
+<p><strong>IBM的 J9</strong></p>
+<p>市场定位与hotspot接近， 号称世界上最快的Java虚拟机(自家环境)</p>
+<p>所有虚拟机的原则:一次编译，到处运行。</p>
+<p>以下是专用硬件平台的虚拟机，仅作了解<br><strong>Azul VM</strong><br>运行于Azul Systems公司的专有硬件Vega系统上的Java虚拟机</p>
+<p>每个Azul VM实例都可以管理至少数十个CPU和数百GB内存的硬件资源，并提供在巨大内存范围内实现可控的GC时间的垃圾收集器、专有硬件优化的线程调度等优秀特性<br><strong>Liquid VM</strong><br>BEA公司开发的，直接运行在自家Hypervisor系统上<br>Liquid VM不需要操作系统的支持，或者说它自己本身实现了一个专用操作系统的必要功能，如线程调度、文件系统、网络支持等。<br>随着JRockit虚拟机中止开发，Liquid VM项目也停止了</p>
+<p>taobaoJVM</p>
  
       <!-- reward -->
       
