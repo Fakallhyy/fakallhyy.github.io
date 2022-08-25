@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">538</span>
+            <span class="post-count">660</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">2 min</span>
         </span>
     </span>
 </div>
@@ -130,6 +130,8 @@
 <p>任务:执行Java程序<br>程序开始执行时他才运行，程序结束时他就停止。<br>执行一个所谓Java程序的时候，真真正正在执行的是一个叫做Java虚拟机的进程。</p>
 <p><strong>虚拟机的退出</strong></p>
 <p>正常执行结束<br>遇到异常或错误 异常终止<br>操作系统出现错误导致Java虚拟机进程终止<br>某线程调用Runtime类或System类的exit方法 或Runtime类的halt方法，并且Java安全管理器也允许这次exit或halt操作<br>除此之外，JNI(Java Native Interface)规范描述了用JNI Invocation API来加载或卸载Java虚拟机时，Java虚拟机的退出</p>
+<h4 id="3-JVM发展历程"><a href="#3-JVM发展历程" class="headerlink" title="3.JVM发展历程"></a>3.JVM发展历程</h4><p><strong>Sun Classic VM</strong></p>
+<p>JDK1.4淘汰<br>内部只提供了解释器(这样的效率低，用JIT编译器会提高效率，JIT编译器会寻找重复率高的代码[热点代码]，然后放到方法区的CodeCache，缓存起来)<br>如果使用JIT编译器，就需要进行外挂，一旦使用了JIT编译器，JIT就接管虚拟机的执行系统。解释器就不再工作<br>现在hotspot内置了此虚拟机</p>
  
       <!-- reward -->
       
