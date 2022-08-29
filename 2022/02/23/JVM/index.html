@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">1.4k</span>
+            <span class="post-count">1.9k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">5 min</span>
+            <span class="post-count">6 min</span>
         </span>
     </span>
 </div>
@@ -164,6 +164,33 @@
 <p>在阿里产品上性能高，硬件严重依赖intel的cpu，损失了兼容性，但提高了性能</p>
 <h3 id="二、类加载子系统"><a href="#二、类加载子系统" class="headerlink" title="二、类加载子系统"></a>二、类加载子系统</h3><p><img src="https://s1.328888.xyz/2022/08/26/GGsno.png" alt="c"><br><img src="https://s1.328888.xyz/2022/08/26/GGVfp.png" alt="e"></p>
 <h4 id="2-1-类加载器和类加载的过程"><a href="#2-1-类加载器和类加载的过程" class="headerlink" title="2.1 类加载器和类加载的过程"></a>2.1 类加载器和类加载的过程</h4><p><img src="https://s1.328888.xyz/2022/08/26/GGP4F.png" alt="cc"></p>
+<ul>
+<li>类加载器子系统负责从文件系统或者网络中加载 Class 文件，class 文件在文件开头有特定的文件标识。</li>
+<li>ClassLoader 只负责 class文件的加载，至于它是否可以运行，则由 Execution Engine 决定；</li>
+<li>加载的类信息存放于一块称为方法区的内存空间。除了类的信息外，方法区中还会存放运行时常量池信息（如下所示），可能还包括字符串字面量和数字常量（这部分常量信息是Class文件中常量池部分的内存映射）</li>
+</ul>
+<p>1.加载器ClassLoader的角色<br><img src="https://s1.328888.xyz/2022/08/26/GCTHS.png" alt="类加载器"></p>
+<ul>
+<li>class file 存在于本地磁盘上，可以理解为设计师画在纸上的模板，而最终这个模板在执行的时候是要加载到 JVM 当中来的，根据这个文件实例化出N个一模一样的实例。</li>
+<li>class file 加载到JVM中，被称为DNA元数据模板，放在方法区；</li>
+<li>在.class文件-&gt;JVM-&gt;最终成为元数据模板，此过程就要一个运输工具（类装载器 ClassLoader），扮演一个快递员的角色。</li>
+</ul>
+<p>2.类的加载过程<br>加载-&gt;验证-&gt;准备(链接)-&gt;解析-&gt;初始化</p>
+<p><strong>加载</strong></p>
+<ul>
+<li>通过一个类的全限定获取定义此类的二进制字节流</li>
+<li>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构</li>
+<li>在内存中**生成一个代表这个类的java.lang.Class对象,**作为方法区这个类的各种数据的访问入口。</li>
+</ul>
+<p>加载.class文件的方式有:</p>
+<ul>
+<li>从本地系统中直接加载;</li>
+<li>通过网络获取，典型场景：Web Applet（小程序）；</li>
+<li>从zip压缩包中读取，比如：jar、war格式的文件</li>
+<li>运行时计算生成，使用最多的是：动态代理技术。</li>
+</ul>
+<p><strong>链接</strong></p>
+<p><img src="https://s1.328888.xyz/2022/08/29/CzFPm.png" alt="链接"></p>
  
       <!-- reward -->
       

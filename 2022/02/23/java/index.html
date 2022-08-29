@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">4.4k</span>
+            <span class="post-count">5k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">18 min</span>
+            <span class="post-count">20 min</span>
         </span>
     </span>
 </div>
@@ -237,9 +237,28 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Vector</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(<span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Vector</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(initialCapacity, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Vector</span><span class="params">(<span class="keyword">int</span> initialCapacity, <span class="keyword">int</span> capacityIncrement)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>();</span><br><span class="line">    <span class="keyword">if</span> (initialCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(...);</span><br><span class="line">    <span class="keyword">this</span>.elementData = <span class="keyword">new</span> Object[initialCapacity];</span><br><span class="line">    <span class="keyword">this</span>.capacityIncrement = capacityIncrement;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>容量变成2倍</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">    <span class="comment">/* 计算新的容量（按照指定的增速扩容）</span></span><br><span class="line"><span class="comment">    那个指定无效或未指定时，容量变为 2 倍 */</span></span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + ((capacityIncrement &gt; <span class="number">0</span>) ?</span><br><span class="line">                                     capacityIncrement : oldCapacity);</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = minCapacity;</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">    <span class="comment">/* 计算新的容量（按照指定的增速扩容）</span></span><br><span class="line"><span class="comment">    那个指定无效或未指定时，容量变为 2 倍 */</span></span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + </span><br><span class="line">            ((capacityIncrement &gt; <span class="number">0</span>) ? capacityIncrement : oldCapacity);</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = minCapacity;</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="13-7-LinkedList"><a href="#13-7-LinkedList" class="headerlink" title="13.7 LinkedList"></a>13.7 LinkedList</h4> 
+<h4 id="13-7-LinkedList"><a href="#13-7-LinkedList" class="headerlink" title="13.7 LinkedList"></a>13.7 LinkedList</h4><p>1.LinkedList 是 List 的实现子类，底层以链表形式存储元素。<br>2.链表是一种非线性结构：其以节点方式存储，节点间在内存上的位置不连续。<br>3.链表是有序的列表。单向链表每个节点包含 data 域和 next 域。那些 next 域指向下一节点的位置。<br>4.双向链表在单向链表的基础上，每个节点加入 prev 区域以指示其前方节点。这样，就能实现双向查找。双向链表可以不依靠辅助节点而实现自我删除。<br>5.LinkedList 底层实现了 双向链表 和 双端队列 特点。<br>6.LinkedList 可以添加 null，可添加重复元素。但没有实现同步，因此线程不安全。</p>
+<hr>
+<p>只有默认构造器和一个拷贝构造器<br>底层维护了一个双向链表<br>两个属性first、last分别指向首节点 和 尾节点<br>每个节点（Node 对象），里面又维护了prev、next、item属性<br>通过prev指向前一个节点，通过next指向后一个节点，实现双向链表</p>
+<hr>
+<p>不需要扩容，增删元素只需要改变节点的指向</p>
+<p>增删操作多选择LinkedList，改查操作多选ArrayList</p>
+<p>p518~p520</p>
+<h3 id="14-泛型"><a href="#14-泛型" class="headerlink" title="14. 泛型"></a>14. 泛型</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Properties&lt;Person&gt; prop = <span class="keyword">new</span> Properties&lt;Person&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>1.编译时，检查添加元素的类型。可以保证如果编译时没发出警告，运行就不会产生 ClassCastException 异常。提高了安全性，使代码更加简洁、健壮。<br>2.也减少了转换的次数，提高了效率。<br>3.泛型的作用是：可以在类声明是通过一个标识表示类中某个属性的类型，或某个方法返回值的类型，或参数类型。</p>
+<p>实例化泛型:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; strList = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">Iterator&lt;Integer&gt; iterator = vector.interator&lt;Integer&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>类名后面指定类型参数的值</p>
+<p><strong>细节</strong></p>
+<p>1.泛型只能是引用类型<br>2.指定泛型具体类型后，可以传入该类型或其子类类型<br>3.在实际开发中往往简写泛型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; strList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>编译器会进行类型推断，右边 &lt; &gt; 内容可以省略<br>4.实例化不写泛型的场合，相当于默认泛型为 Object</p>
+ 
       <!-- reward -->
       
       <div id="reword-out">
