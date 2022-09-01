@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">5k</span>
+            <span class="post-count">5.5k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">20 min</span>
+            <span class="post-count">22 min</span>
         </span>
     </span>
 </div>
@@ -258,6 +258,23 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; strList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
 
 <p>编译器会进行类型推断，右边 &lt; &gt; 内容可以省略<br>4.实例化不写泛型的场合，相当于默认泛型为 Object</p>
+<h3 id="15-多线程-高并发"><a href="#15-多线程-高并发" class="headerlink" title="15.多线程/高并发"></a>15.多线程/高并发</h3><p>程序：为完成特定任务，用某种语言编写的一组指令的集合。</p>
+<p>进程：运行中的程序。当你运行一个程序，系统就会为该进程分配空间。进程是程序的一次执行过程。是一个动态过程：有其自身产生、存在、消亡的过程。</p>
+<p>线程：由进程创建的，进程的一个实体。一个进程可以有多个线程。</p>
+<p>单线程：同一时刻，只允许执行一个线程。</p>
+<p>多线程：同一时刻，可以执行多个线程。</p>
+<p>并发：同一时刻，多个任务交替执行，造成一种貌似并行的状态。单核 CPU 实现的多任务就是并发。</p>
+<p>并行：同一时刻，多个任务同时进行。多核 CPU 可以实现并行。</p>
+<p>线程共有 4 种状态：新建（New）、可运行（Runnable）、死亡（Dead）、阻塞（Blocked）</p>
+<h4 id="15-1-线程的使用"><a href="#15-1-线程的使用" class="headerlink" title="15.1 线程的使用"></a>15.1 线程的使用</h4><p><strong>1.继承Tread类</strong></p>
+<p>Thread 类是 Java 用于表示线程的类。那么，一个类被定义为其子类，则该类也能用来表示线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"> Type type = <span class="keyword">new</span> Type();</span><br><span class="line"> type.start();      <span class="comment">//开始线程</span></span><br><span class="line">    <span class="comment">//如果用 run 方法，则还是停留在主线程</span></span><br><span class="line">    <span class="comment">//  那样，相当于串行。执行完毕才继续</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Type</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;     <span class="comment">//先继承 Thread 类</span></span><br><span class="line"> <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">         System.out.println(i);</span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">             Thread.sleep(<span class="number">100</span>);  <span class="comment">//休眠 100 毫秒</span></span><br><span class="line">         &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">             e.printStackTrace();</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span> (i++ == <span class="number">10</span>) &#123;   <span class="comment">//i = 10 时停止循环</span></span><br><span class="line">             <span class="keyword">break</span>;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>1.start() 方法调用了一个 start0() 底层方法</p>
+<p>2.start0() 是本地方法，由 JVM 调用，底层是 c/c++ 实现</p>
+<p>3.真正的多线程效果，是 start0()，而不是 run()</p>
+<p>4.start() 方法调用 start0() 方法后，该线程不一定会立刻执行，只是将线程变成了可运行状态。具体何时运行，由 CPU 统一调度</p>
+<p><strong>2.实现Runnable接口</strong></p>
  
       <!-- reward -->
       
