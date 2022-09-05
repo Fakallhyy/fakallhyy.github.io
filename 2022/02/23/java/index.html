@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">6.3k</span>
+            <span class="post-count">7.4k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">25 min</span>
+            <span class="post-count">29 min</span>
         </span>
     </span>
 </div>
@@ -331,7 +331,74 @@
 <li><p>Thread.currentThread()：引用当前运行中的线程</p>
 </li>
 </ul>
- 
+<h4 id="15-4-用户线程和守护线程"><a href="#15-4-用户线程和守护线程" class="headerlink" title="15.4 用户线程和守护线程"></a>15.4 用户线程和守护线程</h4><ul>
+<li><p>用户线程：也叫工作线程。当线程任务执行完毕或通知方式结束</p>
+</li>
+<li><p>守护线程：一般是为工作线程服务的。当所有线程结束，守护线程自动结束</p>
+</li>
+</ul>
+<p>常见的守护线程：垃圾回收机制</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Thread thraed = <span class="keyword">new</span> Thread(bullet);</span><br><span class="line">thread.setDeamon(<span class="keyword">true</span>);  <span class="comment">//这样，子线程被设置为主线程的守护线程</span></span><br><span class="line">thread.start();</span><br></pre></td></tr></table></figure>
+
+<h4 id="15-5-线程的生命周期"><a href="#15-5-线程的生命周期" class="headerlink" title="15.5 线程的生命周期"></a>15.5 线程的生命周期</h4><p>线程的状态有</p>
+<ul>
+<li><p>NEW：尚未启动</p>
+</li>
+<li><p>RUNNABLE：在 JVM 中执行的线程</p>
+</li>
+</ul>
+<p>可细分为 READY 和 RUNNING</p>
+<ul>
+<li><p>BLOCKED：被阻塞等待监视器锁定的线程</p>
+</li>
+<li><p>WAITING：正等待另一个线程执行特定动作的线程</p>
+</li>
+<li><p>TIMED_WAITING：正等待另一个线程执行特定动作达到等待时间的线程</p>
+</li>
+<li><p>TERMINATED：已退出的线程</p>
+</li>
+</ul>
+<p><img src="https://s1.328888.xyz/2022/09/05/1e2kB.png" alt="生命周期"></p>
+<h4 id="15-6-互斥锁"><a href="#15-6-互斥锁" class="headerlink" title="15.6 互斥锁"></a>15.6 互斥锁</h4><p>在 Java 语言中，引入了 “对象互斥锁” 的概念，也称为监视器，来保证共享数据操作的完整性</p>
+<p>每个对象都对应一个可称为 “互斥锁” 的标记，这个标记用来保证在任一时刻都只能有一个线程访问对象。</p>
+<p>Java 语言中，有 2 种方式实现互斥锁：</p>
+<p>用关键字 volatile 声明一个共享数据（变量）。一般很少使用该关键字<br>用关键字 synchronized 声明共享数据的一个方法或一个代码<br>同步的局限性：导致程序的执行效率要降低。</p>
+<p>非静态的对象，同步方法的锁可以是 this，也可以是其他对象（要求是同一对象）</p>
+<p>静态对象，同步方法的锁为当前类本身</p>
+<p>1.同步代码块</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> (对象) &#123; <span class="comment">//得到对象的锁，才能操作同步代码</span></span><br><span class="line">    需要被同步代码;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在第一个线程持有锁定标记时，如果另一个线程企图执行该代码块语句，将从对象中索取锁定标记。</p>
+<p>因为此时该标记不可得，古该线程不能继续执行，而是加入等待队列。</p>
+<p>程序运行完 synchronized 代码块后，锁定标记会被自动返还。即使该同步代码块执行过程中抛出异常也是如此。一个线程多次调用该同步代码块的场合，也会在最外层执行完毕后正确返还。</p>
+<p>2.放在方法声明中，表示整个方法为同步方法</p>
+<p>因为 synchronized 语句的参数必须是 this，因此允许下面这种简洁的写法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>&#123;</span><br><span class="line">    代码;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="15-7-线程死锁"><a href="#15-7-线程死锁" class="headerlink" title="15.7 线程死锁"></a>15.7 线程死锁</h4><p>多个线程都占用了对方的资源，不肯相让，就导致了死锁。编程时要避免死锁的产生。</p>
+<ul>
+<li><p>以下操作会释放锁</p>
+<p>  1.当前线程的同步方法、同步代码块执行结束。<br>  2.当前线程在同步方法、同步代码块中遇到 break、return<br>  3.当前线程在同步方法、同步代码块中出现了未处理的 Error<br>  4.当前线程在同步方法、同步代码块中执行了 wait() 方法，当前线程暂停，并释放锁</p>
+</li>
+<li><p>以下操作不会释放锁</p>
+<p>  1.执行同步方法、同步代码块时，程序调用 Thread.sleep() 或 Thread.yield() 方法暂停当前线程的执行，不会释放锁</p>
+<p>  2.线程执行同步代码块时，其他线程调用了该线程的 suspend() 方法将该线程挂起，该线程不会释放锁</p>
+<p>  3.所以，应尽量避免使用 suspend() 和 resume() 来控制线程</p>
+</li>
+</ul>
+<h4 id="15-8-线程的同步"><a href="#15-8-线程的同步" class="headerlink" title="15.8 线程的同步"></a>15.8 线程的同步</h4><p>  Java 中，可以使用 wait()、notify()、notifyAll() 来协调线程间的运行速度关系。这些方法都被定义在 java.lang.Object 中</p>
+<p>Java 中的每个对象实例都有两个线程队列和它相连。一个用以实现等待锁定标志的线程，另一个用来实现 wait() 和 notify() 的交互机制</p>
+<ul>
+<li><p>wait()：让当前线程释放所有其持有的 “对象互斥锁”，进入等待队列</p>
+</li>
+<li><p>notify()、notifyAll()：唤醒一个或所有在等待队列中等待的线程，并将他们移入同一个等待 “对象互斥锁” 的队列。</p>
+</li>
+</ul>
+<p>执行这些方法时如果没有等待中的线程，则其不会生效，也不会被保留到以后再生效</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> (key) &#123;</span><br><span class="line">    <span class="keyword">if</span> (key.value == <span class="number">0</span>) key.wait();</span><br><span class="line">    key.value--;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">synchronized</span> (key) &#123;</span><br><span class="line">    key.value++;</span><br><span class="line">    key.nitifyAll();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为调用这些方法时必须持有对象的 “对象互斥锁”，所以上述方法只能在 synhronized 方法或代码块中执行。</p>
+<h3 id="16-IO-反射"><a href="#16-IO-反射" class="headerlink" title="16.IO /  反射"></a>16.IO /  反射</h3> 
       <!-- reward -->
       
       <div id="reword-out">
