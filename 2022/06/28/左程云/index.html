@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">1.8k</span>
+            <span class="post-count">1.9k</span>
         </span>
     </span>
 
@@ -185,8 +185,17 @@
 <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-depth-of-binary-tree/">返回一棵树的最大深度</a></p>
 <p><a target="_blank" rel="noopener" href="https://fakallhyy.github.io/2022/05/25/demo_newclass6/#Code04-MaximumDepthOfBinaryTree">题解</a></p>
 <p>6的code5没看 递归不太理解<br>7 8没看</p>
-<h3 id="二、体系班"><a href="#二、体系班" class="headerlink" title="二、体系班"></a>二、体系班</h3><h4 id="2-1-video1"><a href="#2-1-video1" class="headerlink" title="2.1 video1"></a>2.1 video1</h4><h5 id=""><a href="#" class="headerlink" title=""></a></h5><p>复杂度 对数器 二分法</p>
-<p>test<br>test<br>test</p>
+<h3 id="二、体系班"><a href="#二、体系班" class="headerlink" title="二、体系班"></a>二、体系班</h3><h4 id="2-1-video1"><a href="#2-1-video1" class="headerlink" title="2.1 video1"></a>2.1 video1</h4><p>复杂度 对数器 二分法</p>
+<h5 id="异或"><a href="#异或" class="headerlink" title="异或"></a>异或</h5><p>异或就是无进位相加</p>
+<p>0^N = N<br>N^N = 0</p>
+<ol>
+<li><p>不用任何变量交换ab</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a= a^b</span><br><span class="line">b= a^b</span><br><span class="line">a= a^b</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一个数组中有一种数出现了奇数次，其他数都出现了偶数次，怎么找到并打印这种数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xor &#x3D; 0;</span><br><span class="line">xor &#x3D; xor^arr[0];</span><br><span class="line">xor &#x3D; xor^arr[1];</span><br><span class="line"></span><br><span class="line">return xor;</span><br><span class="line">&#x2F;&#x2F;0^N &#x3D; N</span><br><span class="line">&#x2F;&#x2F;N^N &#x3D; 0</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
  
       <!-- reward -->
       
