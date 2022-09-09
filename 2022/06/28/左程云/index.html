@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">1.9k</span>
+            <span class="post-count">2k</span>
         </span>
     </span>
 
@@ -92,7 +92,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">9 min</span>
+            <span class="post-count">10 min</span>
         </span>
     </span>
 </div>
@@ -188,14 +188,16 @@
 <h3 id="二、体系班"><a href="#二、体系班" class="headerlink" title="二、体系班"></a>二、体系班</h3><h4 id="2-1-video1"><a href="#2-1-video1" class="headerlink" title="2.1 video1"></a>2.1 video1</h4><p>复杂度 对数器 二分法</p>
 <h5 id="异或"><a href="#异或" class="headerlink" title="异或"></a>异或</h5><p>异或就是无进位相加</p>
 <p>0^N = N<br>N^N = 0</p>
-<ol>
-<li><p>不用任何变量交换ab</p>
+<ul>
+<li><p>1.不用任何变量交换ab</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a= a^b</span><br><span class="line">b= a^b</span><br><span class="line">a= a^b</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>一个数组中有一种数出现了奇数次，其他数都出现了偶数次，怎么找到并打印这种数</p>
+<li><p>2.一个数组中有一种数出现了奇数次，其他数都出现了偶数次，怎么找到并打印这种数</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xor &#x3D; 0;</span><br><span class="line">xor &#x3D; xor^arr[0];</span><br><span class="line">xor &#x3D; xor^arr[1];</span><br><span class="line"></span><br><span class="line">return xor;</span><br><span class="line">&#x2F;&#x2F;0^N &#x3D; N</span><br><span class="line">&#x2F;&#x2F;N^N &#x3D; 0</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+<li><p>3.把一个int类型的数，提取出二进制的最右侧的1<br>a&amp;(-a)<br>a&amp;((~a) + 1)</p>
+</li>
+</ul>
  
       <!-- reward -->
       
